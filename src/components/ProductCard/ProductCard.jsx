@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import useCartStore from '../../store/cartStore';
-import { staggerItem, cardHover, imageHoverZoom, tapScale } from '../../utils/motionVariants';
+import { cardHover, imageHoverZoom, tapScale, badgeGlowPulse } from '../../utils/motionVariants';
 import './ProductCard.css';
 
 function ProductCard({ product, index = 0 }) {
@@ -15,76 +15,97 @@ function ProductCard({ product, index = 0 }) {
         e.stopPropagation();
         addItem(product, product.sizes[0]);
         setAdded(true);
-        setTimeout(() => setAdded(false), 1200);
+        setTimeout(() => setAdded(false), 2000);
     };
 
     return (
         <motion.div
             className="product-card"
-            variants={staggerItem}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ delay: index * 0.05, duration: 0.4 }}
             whileHover={cardHover}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
             onClick={() => navigate(`/product/${product.id}`)}
-            style={{ cursor: 'pointer' }}
         >
-            <div className="product-card-image">
+            <div className="product-card-image-wrapper">
                 <motion.img
                     src={product.image}
                     alt={product.name}
+                    className="product-image"
                     loading="lazy"
                     animate={isHovered ? imageHoverZoom : { scale: 1 }}
-                    transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 />
+                <div className="product-image-overlay" />
+
+                {/* Badge */}
                 {product.badge && (
                     <motion.div
-                        className="product-card-badge"
-                        initial={{ opacity: 0, scale: 0.8, y: -8 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ delay: 0.3 + index * 0.05, type: 'spring', stiffness: 400, damping: 20 }}
+                        className={`product-badge ${product.badge.toLowerCase().includes('limit') ? 'badge-limited' : ''}`}
+                        animate={product.badge.toLowerCase().includes('limit') ? badgeGlowPulse : undefined}
                     >
                         {product.badge}
                     </motion.div>
                 )}
-                <motion.div
-                    className="product-card-actions"
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                    transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-                >
+
+                {/* Floating Actions (Visible on Hover) */}
+                <AnimatePresence>
+                    {isHovered && (
+                        <motion.div
+                            className="product-floating-actions"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <motion.button
+                                className="action-btn wishlist-btn"
+                                onClick={(e) => e.stopPropagation()}
+                                whileTap={tapScale}
+                                title="Add to Wishlist"
+                            >
+                                ♡
+                            </motion.button>
+                            <motion.button
+                                className="action-btn quick-view-btn"
+                                onClick={(e) => e.stopPropagation()}
+                                whileTap={tapScale}
+                                title="Quick View"
+                            >
+                                👁
+                            </motion.button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            <div className="product-info-wrapper">
+                <div className="product-meta">
+                    <span className="product-category">{product.category}</span>
+                    <div className="product-rating">
+                        <span className="star">★</span> {product.rating}
+                    </div>
+                </div>
+
+                <h3 className="product-name">{product.name}</h3>
+
+                <div className="product-footer">
+                    <div className="product-price">
+                        <span className="current-price">${product.price.toFixed(2)}</span>
+                        {product.originalPrice && (
+                            <span className="original-price">${product.originalPrice.toFixed(2)}</span>
+                        )}
+                    </div>
+
                     <motion.button
-                        className={`product-card-add-btn ${added ? 'added' : ''}`}
+                        className={`add-cart-btn ${added ? 'added' : ''}`}
                         onClick={handleAddToCart}
                         whileTap={tapScale}
                     >
-                        {added ? '✓ Added' : '+ Add to Cart'}
+                        {added ? 'Added' : 'Add'}
                     </motion.button>
-                    <motion.button
-                        className="product-card-wish-btn"
-                        onClick={(e) => e.stopPropagation()}
-                        whileTap={tapScale}
-                    >
-                        ♡
-                    </motion.button>
-                </motion.div>
-            </div>
-            <div className="product-card-info">
-                <div className="product-card-category">{product.category}</div>
-                <div className="product-card-name">{product.name}</div>
-                <div className="product-card-bottom">
-                    <div className="product-card-price">
-                        <span className="current">${product.price.toFixed(2)}</span>
-                        {product.originalPrice && (
-                            <span className="original">${product.originalPrice.toFixed(2)}</span>
-                        )}
-                    </div>
-                    <div className="product-card-rating">
-                        <span className="star">★</span>
-                        <span>{product.rating}</span>
-                    </div>
                 </div>
             </div>
         </motion.div>

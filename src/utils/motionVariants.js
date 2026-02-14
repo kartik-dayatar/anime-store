@@ -1,33 +1,34 @@
 /**
  * Reusable Framer Motion Variants
- * Semantic naming for consistent animations across the app.
- * Durations: hover ~150-200ms | entrance ~300-500ms | page ~400ms
+ * Animation rules: hover 150–200ms | entrance 400–500ms | stagger 80ms | max 700ms
+ * All animations use transform + opacity only where possible.
  */
 
-// ===== PAGE TRANSITIONS =====
+const EASE_SMOOTH = [0.4, 0, 0.2, 1];
+const EASE_DECEL = [0, 0, 0.2, 1];
+
+// ===== PAGE TRANSITIONS (350–450ms) =====
 export const routeTransition = {
-    initial: { opacity: 0, y: 24, filter: 'blur(4px)' },
+    initial: { opacity: 0, y: 20 },
     animate: {
         opacity: 1,
         y: 0,
-        filter: 'blur(0px)',
-        transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.38, ease: EASE_SMOOTH },
     },
     exit: {
         opacity: 0,
-        y: -16,
-        filter: 'blur(4px)',
-        transition: { duration: 0.3, ease: [0.55, 0, 1, 0.45] },
+        y: -12,
+        transition: { duration: 0.3, ease: EASE_SMOOTH },
     },
 };
 
-// ===== ENTRANCE ANIMATIONS =====
+// ===== ENTRANCE ANIMATIONS (400–500ms) =====
 export const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 28 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.5, ease: EASE_SMOOTH },
     },
 };
 
@@ -36,7 +37,7 @@ export const fadeInDown = {
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.45, ease: EASE_SMOOTH },
     },
 };
 
@@ -45,7 +46,7 @@ export const fadeInLeft = {
     visible: {
         opacity: 1,
         x: 0,
-        transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.5, ease: EASE_SMOOTH },
     },
 };
 
@@ -54,16 +55,16 @@ export const fadeInRight = {
     visible: {
         opacity: 1,
         x: 0,
-        transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.5, ease: EASE_SMOOTH },
     },
 };
 
 export const fadeInScale = {
-    hidden: { opacity: 0, scale: 0.92 },
+    hidden: { opacity: 0, scale: 0.94 },
     visible: {
         opacity: 1,
         scale: 1,
-        transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.45, ease: EASE_SMOOTH },
     },
 };
 
@@ -76,7 +77,28 @@ export const scaleIn = {
     },
 };
 
-// ===== STAGGER CONTAINERS =====
+// Hero card entrance — fade + slight upward (500ms)
+export const heroCardEntrance = {
+    hidden: { opacity: 0, y: 30, scale: 0.98 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.5, ease: EASE_SMOOTH },
+    },
+};
+
+// Section reveal with stagger
+export const sectionReveal = {
+    hidden: { opacity: 0, y: 32 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: EASE_SMOOTH },
+    },
+};
+
+// ===== STAGGER CONTAINERS (80ms delay) =====
 export const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -100,16 +122,15 @@ export const staggerContainerSlow = {
 };
 
 export const staggerItem = {
-    hidden: { opacity: 0, y: 24, filter: 'blur(2px)' },
+    hidden: { opacity: 0, y: 20 },
     visible: {
         opacity: 1,
         y: 0,
-        filter: 'blur(0px)',
-        transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+        transition: { duration: 0.45, ease: EASE_SMOOTH },
     },
 };
 
-// ===== HOVER & TAP =====
+// ===== HOVER & TAP (150–200ms) =====
 export const hoverScale = {
     scale: 1.05,
     transition: { type: 'spring', stiffness: 400, damping: 17 },
@@ -126,8 +147,8 @@ export const hoverLift = {
 };
 
 export const hoverGlow = {
-    boxShadow: '0 0 24px rgba(79, 70, 229, 0.35)',
-    transition: { duration: 0.2 },
+    boxShadow: '0 0 20px rgba(79, 70, 229, 0.2)',
+    transition: { duration: 0.18 },
 };
 
 export const tapScale = {
@@ -141,16 +162,17 @@ export const tapScaleSubtle = {
 };
 
 // ===== CARD ANIMATIONS =====
+// Light theme card hover — soft shadow + subtle scale
 export const cardHover = {
     y: -6,
-    scale: 1.02,
-    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(79, 70, 229, 0.12)',
+    scale: 1.03,
+    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(79, 70, 229, 0.08)',
     transition: { type: 'spring', stiffness: 300, damping: 20 },
 };
 
 export const imageHoverZoom = {
-    scale: 1.08,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    scale: 1.06,
+    transition: { duration: 0.5, ease: EASE_SMOOTH },
 };
 
 // ===== SLIDE ANIMATIONS =====
@@ -166,6 +188,21 @@ export const slideInUp = {
     animate: { y: 0, opacity: 1 },
     exit: { y: '100%', opacity: 0 },
     transition: { type: 'spring', damping: 28, stiffness: 300 },
+};
+
+// Sidebar — slide in from left (300ms)
+export const sidebarSlide = {
+    hidden: { x: -260, opacity: 0 },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.3, ease: EASE_SMOOTH },
+    },
+    exit: {
+        x: -260,
+        opacity: 0,
+        transition: { duration: 0.25, ease: EASE_SMOOTH },
+    },
 };
 
 // ===== OVERLAY =====
@@ -207,6 +244,20 @@ export const badgePop = {
     },
 };
 
+// Glow pulse for limited edition badges
+export const badgeGlowPulse = {
+    boxShadow: [
+        '0 0 0px rgba(79, 70, 229, 0)',
+        '0 0 12px rgba(79, 70, 229, 0.25)',
+        '0 0 0px rgba(79, 70, 229, 0)',
+    ],
+    transition: {
+        duration: 2.5,
+        repeat: Infinity,
+        ease: 'easeInOut',
+    },
+};
+
 // ===== FLOATING =====
 export const floatAnimation = {
     y: [0, -8, 0],
@@ -230,13 +281,30 @@ export const floatAnimationSlow = {
 export const pulseGlow = {
     boxShadow: [
         '0 0 0px rgba(79, 70, 229, 0)',
-        '0 0 20px rgba(79, 70, 229, 0.4)',
+        '0 0 16px rgba(79, 70, 229, 0.3)',
         '0 0 0px rgba(79, 70, 229, 0)',
     ],
     transition: {
         duration: 2,
         repeat: Infinity,
         ease: 'easeInOut',
+    },
+};
+
+// ===== COUNTDOWN FLIP =====
+export const countdownFlip = {
+    initial: { opacity: 0, y: -12, scale: 0.8 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { type: 'spring', stiffness: 500, damping: 20 },
+    },
+    exit: {
+        opacity: 0,
+        y: 12,
+        scale: 0.8,
+        transition: { duration: 0.15 },
     },
 };
 
@@ -250,8 +318,8 @@ export const springs = {
 
 // ===== UTILITY: Custom easing =====
 export const easings = {
-    smooth: [0.25, 0.46, 0.45, 0.94],
+    smooth: EASE_SMOOTH,
+    decel: EASE_DECEL,
     snappy: [0.55, 0, 0.1, 1],
-    decel: [0, 0, 0.2, 1],
     accel: [0.4, 0, 1, 1],
 };
