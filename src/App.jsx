@@ -9,6 +9,7 @@ import { ToastProvider } from './components/ui/Toast';
 const Home = lazy(() => import('./pages/Home'));
 const Products = lazy(() => import('./pages/Products'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const NewArrivals = lazy(() => import('./pages/NewArrivals'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const Account = lazy(() => import('./pages/Account'));
 
@@ -22,6 +23,7 @@ function AnimatedRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/new-arrivals" element={<NewArrivals />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/account" element={<Account />} />
         </Route>

@@ -37,7 +37,7 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     z-index: 1;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+    box-shadow: var(--shadow-glow);
 }
 
 .product-card-actions {
@@ -68,7 +68,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: background var(--duration-fast) var(--ease-smooth);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .product-card-add-btn:hover {
@@ -85,14 +85,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    color: white;
+    color: var(--color-text-secondary);
     font-size: var(--font-size-lg);
     cursor: pointer;
     transition: all var(--duration-fast) var(--ease-smooth);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .product-card-wish-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

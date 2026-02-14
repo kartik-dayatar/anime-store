@@ -10,7 +10,7 @@
 }
 
 .header.scrolled {
-    background: rgba(10, 10, 15, 0.85);
+    background: var(--header-scrolled-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
@@ -126,14 +126,14 @@
 }
 
 .header-search:hover {
-    border-color: rgba(79, 70, 229, 0.4);
+    border-color: rgba(79, 70, 229, 0.35);
     background: var(--color-surface-hover);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.06);
 }
 
 .header-search:focus-within {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15), 0 0 16px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .header-search svg {

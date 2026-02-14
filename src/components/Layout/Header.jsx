@@ -45,6 +45,7 @@ function Header() {
                     {[
                         { to: '/', label: 'Home', end: true },
                         { to: '/products', label: 'Shop' },
+                        { to: '/new-arrivals', label: 'New Arrivals' },
                         { to: '/account', label: 'Account' },
                     ].map((link) => (
                         <NavLink
