@@ -136,7 +136,8 @@
     border-radius: var(--radius-sm);
     color: var(--color-text);
     font-size: var(--font-size-base);
-    transition: border-color var(--duration-fast) var(--ease-smooth);
+    transition: all var(--duration-normal) var(--ease-smooth);
+    outline: none;
 }
 
 .form-input::placeholder {
@@ -145,7 +146,7 @@
 
 .form-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12), 0 0 16px rgba(79, 70, 229, 0.08), inset 0 -2px 0 var(--color-primary);
 }
 
 .form-actions {

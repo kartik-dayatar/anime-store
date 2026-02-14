@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
+import { overlayFade, tapScale, springs } from '../../utils/motionVariants';
 import './CartDrawer.css';
 
 function CartDrawer() {
@@ -20,10 +21,10 @@ function CartDrawer() {
                     {/* Overlay */}
                     <motion.div
                         className="cart-overlay"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        variants={overlayFade}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         onClick={closeCart}
                     />
 
@@ -33,40 +34,95 @@ function CartDrawer() {
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
-                        transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+                        transition={{
+                            type: 'spring',
+                            damping: 35,
+                            stiffness: 400,
+                            mass: 0.8,
+                        }}
                     >
                         {/* Header */}
-                        <div className="cart-header">
+                        <motion.div
+                            className="cart-header"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15, duration: 0.3 }}
+                        >
                             <h3>
                                 Your Cart
-                                <span className="cart-header-count">({getCount()} items)</span>
+                                <AnimatePresence mode="wait">
+                                    <motion.span
+                                        key={getCount()}
+                                        className="cart-header-count"
+                                        initial={{ opacity: 0, y: -8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 8 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        ({getCount()} items)
+                                    </motion.span>
+                                </AnimatePresence>
                             </h3>
-                            <button className="cart-close" onClick={closeCart}>
+                            <motion.button
+                                className="cart-close"
+                                onClick={closeCart}
+                                whileHover={{ rotate: 90, scale: 1.1 }}
+                                whileTap={tapScale}
+                                transition={{ duration: 0.2 }}
+                            >
                                 ✕
-                            </button>
-                        </div>
+                            </motion.button>
+                        </motion.div>
 
                         {/* Items */}
                         <div className="cart-items">
                             {items.length === 0 ? (
-                                <div className="cart-empty">
-                                    <div className="cart-empty-icon">🛒</div>
+                                <motion.div
+                                    className="cart-empty"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                                >
+                                    <motion.div
+                                        className="cart-empty-icon"
+                                        animate={{ y: [0, -6, 0] }}
+                                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                    >
+                                        🛒
+                                    </motion.div>
                                     <p>Your cart is empty</p>
-                                    <button className="btn btn-secondary" onClick={closeCart}>
+                                    <motion.button
+                                        className="btn btn-secondary"
+                                        onClick={closeCart}
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={tapScale}
+                                    >
                                         Continue Shopping
-                                    </button>
-                                </div>
+                                    </motion.button>
+                                </motion.div>
                             ) : (
-                                <AnimatePresence>
-                                    {items.map((item) => (
+                                <AnimatePresence mode="popLayout">
+                                    {items.map((item, idx) => (
                                         <motion.div
                                             key={`${item.id}-${item.selectedSize}`}
                                             className="cart-item"
                                             layout
-                                            initial={{ opacity: 0, x: 30 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -30, height: 0, marginBottom: 0, padding: 0 }}
-                                            transition={{ duration: 0.3 }}
+                                            initial={{ opacity: 0, x: 40, scale: 0.95 }}
+                                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                                            exit={{
+                                                opacity: 0,
+                                                x: 60,
+                                                scale: 0.8,
+                                                height: 0,
+                                                marginBottom: 0,
+                                                padding: 0,
+                                                transition: { duration: 0.25, ease: [0.55, 0, 1, 0.45] },
+                                            }}
+                                            transition={{
+                                                layout: springs.gentle,
+                                                delay: idx * 0.05,
+                                                duration: 0.3,
+                                            }}
                                         >
                                             <div className="cart-item-image">
                                                 <img src={item.image} alt={item.name} />
@@ -76,29 +132,46 @@ function CartDrawer() {
                                                 <div className="cart-item-size">Size: {item.selectedSize}</div>
                                                 <div className="cart-item-price">${item.price.toFixed(2)}</div>
                                                 <div className="cart-item-controls">
-                                                    <button
+                                                    <motion.button
                                                         className="qty-btn"
+                                                        whileHover={{ scale: 1.15 }}
+                                                        whileTap={tapScale}
                                                         onClick={() =>
                                                             updateQuantity(item.id, item.selectedSize, item.quantity - 1)
                                                         }
                                                     >
                                                         −
-                                                    </button>
-                                                    <span className="cart-item-qty">{item.quantity}</span>
-                                                    <button
+                                                    </motion.button>
+                                                    <AnimatePresence mode="wait">
+                                                        <motion.span
+                                                            key={item.quantity}
+                                                            className="cart-item-qty"
+                                                            initial={{ y: -8, opacity: 0 }}
+                                                            animate={{ y: 0, opacity: 1 }}
+                                                            exit={{ y: 8, opacity: 0 }}
+                                                            transition={{ duration: 0.15 }}
+                                                        >
+                                                            {item.quantity}
+                                                        </motion.span>
+                                                    </AnimatePresence>
+                                                    <motion.button
                                                         className="qty-btn"
+                                                        whileHover={{ scale: 1.15 }}
+                                                        whileTap={tapScale}
                                                         onClick={() =>
                                                             updateQuantity(item.id, item.selectedSize, item.quantity + 1)
                                                         }
                                                     >
                                                         +
-                                                    </button>
-                                                    <button
+                                                    </motion.button>
+                                                    <motion.button
                                                         className="cart-item-remove"
                                                         onClick={() => removeItem(item.id, item.selectedSize)}
+                                                        whileHover={{ color: '#ef4444', x: 2 }}
+                                                        whileTap={tapScale}
                                                     >
                                                         Remove
-                                                    </button>
+                                                    </motion.button>
                                                 </div>
                                             </div>
                                         </motion.div>
@@ -109,10 +182,25 @@ function CartDrawer() {
 
                         {/* Summary */}
                         {items.length > 0 && (
-                            <div className="cart-summary">
+                            <motion.div
+                                className="cart-summary"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2, duration: 0.3 }}
+                            >
                                 <div className="cart-summary-row">
                                     <span>Subtotal</span>
-                                    <span>${getTotal().toFixed(2)}</span>
+                                    <AnimatePresence mode="wait">
+                                        <motion.span
+                                            key={getTotal()}
+                                            initial={{ opacity: 0, y: -6 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 6 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            ${getTotal().toFixed(2)}
+                                        </motion.span>
+                                    </AnimatePresence>
                                 </div>
                                 <div className="cart-summary-row">
                                     <span>Shipping</span>
@@ -120,15 +208,34 @@ function CartDrawer() {
                                 </div>
                                 <div className="cart-summary-total">
                                     <span>Total</span>
-                                    <span>${getTotal().toFixed(2)}</span>
+                                    <AnimatePresence mode="wait">
+                                        <motion.span
+                                            key={getTotal()}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 1.1 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            ${getTotal().toFixed(2)}
+                                        </motion.span>
+                                    </AnimatePresence>
                                 </div>
-                                <button className="cart-checkout-btn" onClick={handleCheckout}>
+                                <motion.button
+                                    className="cart-checkout-btn"
+                                    onClick={handleCheckout}
+                                    whileHover={{ y: -2, boxShadow: '0 0 30px rgba(79, 70, 229, 0.4)' }}
+                                    whileTap={tapScale}
+                                >
                                     Proceed to Checkout
-                                </button>
-                                <button className="cart-continue" onClick={closeCart}>
+                                </motion.button>
+                                <motion.button
+                                    className="cart-continue"
+                                    onClick={closeCart}
+                                    whileHover={{ color: 'var(--color-text)' }}
+                                >
                                     Continue Shopping
-                                </button>
-                            </div>
+                                </motion.button>
+                            </motion.div>
                         )}
                     </motion.div>
                 </>
