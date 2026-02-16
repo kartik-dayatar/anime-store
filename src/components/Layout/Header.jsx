@@ -34,7 +34,7 @@ function Header({ onSidebarToggle }) {
                         </svg>
                     </button>
 
-                    <Link to="/" className="header-logo">
+                    <Link to="/home" className="header-logo">
                         <span className="logo-icon">⚡</span>
                         <span className="logo-text">AnimeStore</span>
                     </Link>

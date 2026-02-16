@@ -6,6 +6,7 @@ import AnimatedLoader from './components/ui/AnimatedLoader';
 import { ToastProvider } from './components/ui/Toast';
 
 // Lazy load pages for code splitting
+const Landing = lazy(() => import('./pages/Landing'));
 const Home = lazy(() => import('./pages/Home'));
 const Products = lazy(() => import('./pages/Products'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
@@ -19,8 +20,12 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        {/* Landing Page - Outside Layout */}
+        <Route path="/" element={<Landing />} />
+
+        {/* Main Store - Inside Layout */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/new-arrivals" element={<NewArrivals />} />
@@ -36,7 +41,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
-        <Suspense fallback={<AnimatedLoader text="Loading AnimeStore..." />}>
+        <Suspense fallback={<AnimatedLoader text="Initializing..." />}>
           <AnimatedRoutes />
         </Suspense>
       </ToastProvider>

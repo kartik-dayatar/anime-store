@@ -32,17 +32,17 @@ function Sidebar({ isOpen, onClose }) {
                 variants={sidebarSlide}
             >
                 <div className="sidebar-header">
-                    <div className="sidebar-logo">
+                    <Link to="/home" className="sidebar-logo" style={{ textDecoration: 'none' }}>
                         <span className="logo-icon">⚡</span>
                         <span className="logo-text">AnimeStore</span>
-                    </div>
+                    </Link>
                 </div>
 
                 <div className="sidebar-content">
                     <div className="sidebar-section">
                         <h3 className="sidebar-label">Browse</h3>
                         <nav className="sidebar-nav">
-                            <NavLink to="/" end className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+                            <NavLink to="/home" end className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
                                 <span className="link-icon">🏠</span>
                                 <span className="link-text">Home</span>
                             </NavLink>
