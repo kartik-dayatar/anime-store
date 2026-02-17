@@ -1,0 +1,37 @@
+/* Specific overrides for Register page, used alongside Login.css */
+
+.register-fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.login-label-optional {
+    font-weight: 400;
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.85em;
+    margin-left: 4px;
+}
+
+.register-terms {
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.register-terms input {
+    margin-top: 4px;
+}
+
+.register-hero-copy {
+    color: var(--text-muted, #64748b);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+}
+
+@media (max-width: 600px) {
+    .register-fields-row {
+        grid-template-columns: 1fr;
+    }
+}

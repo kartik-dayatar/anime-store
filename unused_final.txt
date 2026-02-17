@@ -1,0 +1,9 @@
+--- UNUSED FILES REPORT ---
+components\ProductCard\ProductCard.jsx
+components\ui\CollectorBadge.jsx
+components\ui\DropCountdown.jsx
+components\ui\MagneticButton.jsx
+components\ui\PageTransition.jsx
+components\ui\ScarcityBar.jsx
+components\ui\TypingText.jsx
+utils\landingVariants.js

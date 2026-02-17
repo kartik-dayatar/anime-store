@@ -43,8 +43,8 @@ function Footer() {
                     <h4>Support</h4>
                     <Link to="/contact">Contact Us</Link>
                     <Link to="/account">My Account</Link>
-                    <Link to="/track_order">Track Order</Link>
-                    <Link to="/giftcards">Gift Cards</Link>
+                    <Link to="/order-tracking">Track Order</Link>
+                    <Link to="/gift-cards">Gift Cards</Link>
                 </div>
 
                 {/* Col 4: Stay Connected */}

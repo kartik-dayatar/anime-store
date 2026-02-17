@@ -11,7 +11,7 @@ import {
     reviewsData,
     newsData,
     blogData
-} from '../data/homeData';
+} from '../../data/homeData';
 import './Home.css';
 
 function Home() {
@@ -132,6 +132,7 @@ function Home() {
 
             {/* 3. SHOP BY ANIME */}
             <section className="section" id="shop-anime">
+                <span id="categories" style={{ position: 'absolute', top: '-100px' }}></span>
                 <div className="container">
                     <div className="section-header fade-in">
                         <div>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import LandingLoader from '../components/landing/LandingLoader';
-import TextEncrypted from '../components/ui/TextEncrypted';
+import LandingLoader from '../../components/landing/LandingLoader';
+import TextEncrypted from '../../components/ui/TextEncrypted';
 import { Spin as Hamburger } from 'hamburger-react';
 import './Landing.css';
 

@@ -239,14 +239,14 @@
 }
 
 .float-1 {
-    top: 50px;
+    top: 0px;
     left: 10%;
     z-index: 2;
     animation: heroFloat 5s ease-in-out infinite;
 }
 
 .float-2 {
-    top: 120px;
+    top: 30px;
     left: 55%;
     z-index: 3;
     animation: heroFloat 5s ease-in-out 1.5s infinite;
@@ -254,7 +254,7 @@
 }
 
 .float-3 {
-    top: 280px;
+    top: 190px;
     left: 25%;
     z-index: 1;
     animation: heroFloat 5s ease-in-out 2.5s infinite;
