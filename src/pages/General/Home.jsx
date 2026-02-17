@@ -94,7 +94,12 @@ function Home() {
                                 <div className="slide-visual">
                                     {slide.visuals.map((vis, i) => (
                                         <div key={i} className={`hero-float-card ${vis.class}`}>
-                                            <div className="float-img" style={{ background: vis.bg }}></div>
+                                            <img
+                                                src={vis.img}
+                                                alt={vis.text}
+                                                className="float-img"
+                                                style={{}}
+                                            />
                                             <span>{vis.text}</span>
                                         </div>
                                     ))}

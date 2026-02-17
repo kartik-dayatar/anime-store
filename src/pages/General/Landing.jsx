@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import LandingLoader from '../../components/landing/LandingLoader';
+import ParticleLoader from '../../components/landing/ParticleLoader';
 import TextEncrypted from '../../components/ui/TextEncrypted';
 import { Spin as Hamburger } from 'hamburger-react';
 import './Landing.css';
@@ -58,15 +58,11 @@ const AVATARS = [
 
 function Landing() {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true); // Content visibility
+    const [showLoader, setShowLoader] = useState(true); // Loader mounting
     const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0]);
     const [isTrailerOpen, setIsTrailerOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 1400);
-        return () => clearTimeout(timer);
-    }, []);
 
     // Get last 4 avatars for the menu
     const menuItems = AVATARS.slice(-4);
@@ -77,16 +73,35 @@ function Landing() {
 
     return (
         <>
-            <AnimatePresence mode="wait">
-                {isLoading && <LandingLoader key="loader" />}
-            </AnimatePresence>
+            {showLoader && (
+                <ParticleLoader
+                    onComplete={() => {
+                        // 1. Reveal Content with delay to avoid CPU spike sharing
+                        setTimeout(() => {
+                            setIsLoading(false);
+                        }, 100);
 
-            {!isLoading && (
+                        // 2. Unmount Loader
+                        setTimeout(() => {
+                            setShowLoader(false);
+                        }, 1000);
+                    }}
+                />
+            )}
+
+            {/* Main Content - Rendered underneath */}
+            <div style={{
+                opacity: isLoading ? 0 : 1,
+                // Using visibility to prune render tree when hidden
+                visibility: isLoading ? 'hidden' : 'visible',
+                transition: 'opacity 1.2s ease-out',
+                willChange: 'opacity' // GPU Hint
+            }}>
                 <motion.div
                     className="landing-page"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                    animate={{ opacity: isLoading ? 0 : 1 }} // Controlled by isLoading
+                    transition={{ delay: 0.2 }} // Wait for CSS fade to start
                     style={{
                         '--c-accent': selectedAvatar.accent || '#38bdf8'
                     }}
@@ -377,9 +392,10 @@ function Landing() {
                     </motion.div>
 
                 </motion.div>
-            )}
+            </div>
         </>
     );
 }
 
 export default Landing;
+

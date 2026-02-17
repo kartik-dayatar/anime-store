@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Slab } from 'react-loading-indicators';
 
 function LandingLoader() {
     return (
@@ -16,72 +17,27 @@ function LandingLoader() {
                 justifyContent: 'center'
             }}
         >
-            <div style={{ position: 'relative', width: '60px', height: '60px' }}>
-                {/* Thin Ring */}
-                <motion.div
-                    style={{
-                        position: 'absolute', inset: 0,
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        borderRadius: '50%'
-                    }}
-                />
-
-                {/* Rotating Arc */}
-                <motion.div
-                    style={{
-                        position: 'absolute', inset: 0,
-                        border: '1px solid transparent',
-                        borderTopColor: '#38bdf8',
-                        borderRadius: '50%'
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                />
-
-                {/* Orbiting Dot */}
-                <motion.div
-                    style={{
-                        position: 'absolute', top: 0, left: '50%', width: '4px', height: '4px',
-                        background: '#38bdf8', borderRadius: '50%',
-                        boxShadow: '0 0 8px #38bdf8',
-                        marginLeft: '-2px', marginTop: '-2px'
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                    style={{ transformOrigin: '50% 32px' }}
-                /* Note: transformOrigin needs to center on the ring. 30px radius + 2px offset = 32px? 
-                   Actually, easier to rotate a container. Let's adjust structure. */
-                />
-
-                <motion.div
-                    style={{
-                        position: 'absolute', inset: 0
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                >
-                    <div style={{
-                        position: 'absolute', top: 0, left: '50%', width: '6px', height: '6px',
-                        background: '#ffffff', borderRadius: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        boxShadow: '0 0 10px rgba(56, 189, 248, 0.5)'
-                    }} />
-                </motion.div>
+            <div style={{ position: 'relative', marginBottom: '60px', transform: 'scale(1.5)' }}>
+                <Slab color="#32cd32" size="large" text="" textColor="" />
             </div>
 
             <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 1.2, ease: "easeOut" }}
                 style={{
-                    marginTop: '2rem',
                     fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: '0.875rem',
-                    letterSpacing: '0.2em',
-                    color: '#9ca3af'
+                    fontSize: 'clamp(3rem, 15vw, 12rem)', // Large, responsive text
+                    fontWeight: '900',
+                    letterSpacing: '0.05em',
+                    color: '#ffffff',
+                    textAlign: 'center',
+                    lineHeight: 1,
+                    textTransform: 'uppercase',
+                    mixBlendMode: 'overlay' // Optional: blending for effect
                 }}
             >
-                ANIMESTORE
+                OTAKUNATION
             </motion.div>
         </motion.div>
     );

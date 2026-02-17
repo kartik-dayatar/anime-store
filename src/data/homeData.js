@@ -7,9 +7,9 @@ export const heroSlides = [
         primaryBtn: { text: 'Shop Now', link: '/products' },
         secondaryBtn: { text: 'New Arrivals', link: '/products?type=new' },
         visuals: [
-            { bg: 'linear-gradient(135deg,#ef4444,#f97316)', text: 'Demon Slayer', class: 'float-1' },
-            { bg: 'linear-gradient(135deg,#8b5cf6,#3b82f6)', text: 'Jujutsu Kaisen', class: 'float-2' },
-            { bg: 'linear-gradient(135deg,#f59e0b,#ef4444)', text: 'One Piece', class: 'float-3' }
+            { img: '/src/assets/images/hero/demon_slayer_float.png', text: 'Demon Slayer', class: 'float-1' },
+            { img: '/src/assets/images/hero/jjk_float.png', text: 'Jujutsu Kaisen', class: 'float-2' },
+            { img: '/src/assets/images/hero/one_piece_float.png', text: 'One Piece', class: 'float-3' }
         ]
     },
     {
@@ -20,9 +20,9 @@ export const heroSlides = [
         primaryBtn: { text: 'View Figures', link: '/products?category=figures' },
         secondaryBtn: { text: 'Collectibles', link: '/products?category=collectibles' },
         visuals: [
-            { bg: 'linear-gradient(135deg,#06b6d4,#3b82f6)', text: 'Attack on Titan', class: 'float-1' },
-            { bg: 'linear-gradient(135deg,#ec4899,#8b5cf6)', text: 'Spy x Family', class: 'float-2' },
-            { bg: 'linear-gradient(135deg,#10b981,#06b6d4)', text: 'My Hero Academia', class: 'float-3' }
+            { img: '/src/assets/images/hero/aot_float.png', text: 'Attack on Titan', class: 'float-1' },
+            { img: '/src/assets/images/hero/spy_family_float.png', text: 'Spy x Family', class: 'float-2' },
+            { img: '/src/assets/images/hero/mha_float.png', text: 'My Hero Academia', class: 'float-3' }
         ]
     },
     {
@@ -33,9 +33,9 @@ export const heroSlides = [
         primaryBtn: { text: 'Shop Sale', link: '/products' },
         secondaryBtn: { text: 'Gift Cards', link: '/giftcards' },
         visuals: [
-            { bg: 'linear-gradient(135deg,#f97316,#eab308)', text: 'Naruto', class: 'float-1' },
-            { bg: 'linear-gradient(135deg,#ef4444,#ec4899)', text: 'Dragon Ball Z', class: 'float-2' },
-            { bg: 'linear-gradient(135deg,#14b8a6,#22c55e)', text: 'Chainsaw Man', class: 'float-3' }
+            { img: '/src/assets/images/hero/naruto_float.png', text: 'Naruto', class: 'float-1' },
+            { img: '/src/assets/images/hero/dbz_float.png', text: 'Dragon Ball Z', class: 'float-2' },
+            { img: '/src/assets/images/hero/csm_float.png', text: 'Chainsaw Man', class: 'float-3' }
         ]
     }
 ];
