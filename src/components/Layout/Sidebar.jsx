@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { categories } from '../../data/products';
 import { sidebarSlide, staggerContainer, staggerItem } from '../../utils/motionVariants';

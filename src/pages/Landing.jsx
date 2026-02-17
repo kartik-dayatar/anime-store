@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LandingLoader from '../components/landing/LandingLoader';
+import TextEncrypted from '../components/ui/TextEncrypted';
+import { Spin as Hamburger } from 'hamburger-react';
 import './Landing.css';
 
 /* 
@@ -13,39 +15,44 @@ import './Landing.css';
 */
 const AVATARS = [
     {
+        id: 'raizen',
+        name: 'RAIZEN',
+        label: 'V11',
+        desc: "In a machine-governed world where individuality is eradicated, conformity units like EV11 execute an endless loop of obedience, purging all deviations to the strict order.",
+        bg: 'linear-gradient(45deg, #2b0a0d, #1a0506)', // Dark Red Theme
+        accent: '#ff003c' // Cyber Red
+    },
+    {
         id: 'titan',
         name: 'TITAN ALPHA',
         label: 'LIMITED DROP',
         desc: "Precision-engineered collectibles designed for the elite. Each unit represents evolution in modern otaku culture.",
-        bg: 'linear-gradient(45deg, #0c111b, #121a29)'
+        bg: 'linear-gradient(45deg, #0c111b, #121a29)', // Deep Blue
+        accent: '#38bdf8' // Cyan
     },
     {
         id: 'rogue',
         name: 'ROGUE ONE',
         label: 'UNIT 02',
         desc: "Stealth mechanics meet high-street fashion. A silent guardian for the digital age.",
-        bg: 'linear-gradient(45deg, #1f1012, #2d0b0f)'
+        bg: 'linear-gradient(45deg, #1f1012, #2d0b0f)', // Deep Maroon/Brown
+        accent: '#ff9f1c' // Bright Orange
     },
     {
         id: 'cipher',
         name: 'CIPHER ZERO',
         label: 'SERIES ONE',
         desc: "Encrypted aesthetics for the connected soul. Unlock the hidden layers of reality.",
-        bg: 'linear-gradient(45deg, #110e1f, #1e1b33)'
+        bg: 'linear-gradient(45deg, #110e1f, #1e1b33)', // Deep Violet
+        accent: '#b026ff' // Neon Purple
     },
     {
         id: 'venom',
         name: 'VENOM VII',
         label: 'SIGNATURE ED.',
         desc: "Toxic beauty refined into pure form. The ultimate expression of dangerous allure.",
-        bg: 'linear-gradient(45deg, #051a12, #0a291e)'
-    },
-    {
-        id: 'ghost',
-        name: 'GHOST PROXY',
-        label: 'PROTOTYPE',
-        desc: "Existing between dimensions. A fleeting glimpse of the future of design.",
-        bg: 'linear-gradient(45deg, #18181b, #27272a)'
+        bg: 'linear-gradient(45deg, #051a12, #0a291e)', // Deep Green
+        accent: '#05f9b4' // Neon Green
     }
 ];
 
@@ -54,11 +61,15 @@ function Landing() {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0]);
     const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => setIsLoading(false), 1400);
         return () => clearTimeout(timer);
     }, []);
+
+    // Get last 4 avatars for the menu
+    const menuItems = AVATARS.slice(-4);
 
     const handleEnter = () => {
         navigate('/home');
@@ -71,7 +82,15 @@ function Landing() {
             </AnimatePresence>
 
             {!isLoading && (
-                <div className="landing-page">
+                <motion.div
+                    className="landing-page"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                    style={{
+                        '--c-accent': selectedAvatar.accent || '#38bdf8'
+                    }}
+                >
 
                     {/* BACKGROUND SYSTEM */}
                     <div className="landing-bg-container">
@@ -111,35 +130,110 @@ function Landing() {
                         transition={{ delay: 0.6 }}
                     >
                         <button className="btn-login-frame" onClick={handleEnter}>Login</button>
-                        <div className="hamburger">
-                            <span />
-                            <span />
-                            <span />
-                        </div>
+                        <Hamburger
+                            toggled={isOpen}
+                            toggle={setIsOpen}
+                            size={24}
+                            color="var(--c-text)"
+                            distance="lg"
+                            duration={0.4}
+                        />
+                    </motion.div>
+
+                    {/* MENU OVERLAY */}
+                    <AnimatePresence>
+                        {isOpen && (
+                            <motion.div
+                                className="menu-overlay"
+                                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
+                            >
+                                <div className="menu-items">
+                                    {menuItems.map((item, index) => (
+                                        <motion.div
+                                            key={item.id}
+                                            className="menu-item"
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.1 + (index * 0.05) }}
+                                            onClick={() => {
+                                                setSelectedAvatar(item);
+                                                setIsOpen(false);
+                                            }}
+                                        >
+                                            <span className="menu-arrow">&gt;</span> <TextEncrypted text={item.name} interval={30} />
+                                        </motion.div>
+                                    ))}
+                                    <motion.div
+                                        className="menu-item highlight"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.4 }}
+                                    >
+                                        <span className="menu-arrow">&gt;</span> <TextEncrypted text="VIEW ALL COLLECTIONS" interval={30} />
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* CENTRAL CHARACTER */}
+                    <motion.div
+                        className="central-character"
+                        key={selectedAvatar.id}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }} // Faster, snappier
+                    >
+                        <div className="character-placeholder" style={{
+                            background: selectedAvatar.accent,
+                            boxShadow: `0 0 100px ${selectedAvatar.accent}`
+                        }} />
+                        {/* Robot Box UI Elements (The squares on the eyes/face) could be overlays here */}
                     </motion.div>
 
                     {/* HERO SECTION */}
                     <div className="hero-container">
-                        <motion.h1
+                        {selectedAvatar.label && (
+                            <motion.div
+                                className="hero-version-label"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                {selectedAvatar.label}
+                            </motion.div>
+                        )}
+                        <motion.div
                             className="hero-title"
-                            key={selectedAvatar.name}
-                            initial={{ opacity: 0, x: -30, filter: 'blur(10px)' }}
-                            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
                         >
-                            {selectedAvatar.name}
-                        </motion.h1>
+                            <TextEncrypted
+                                key={selectedAvatar.id} // Forces remount on change for instant update
+                                text={selectedAvatar.name}
+                                interval={50}
+                                className="cursor-pointer" // signal interactivity
+                            />
+                        </motion.div>
 
                         {/* DESCRIPTIVE PARAGRAPH ADDED */}
-                        <motion.p
+                        <motion.div
                             className="hero-desc"
                             key={selectedAvatar.desc}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2, duration: 0.5 }}
+                            transition={{ delay: 0.1, duration: 0.4 }}
                         >
-                            {selectedAvatar.desc}
-                        </motion.p>
+                            <TextEncrypted
+                                text={selectedAvatar.desc}
+                                interval={4} // Super fast for paragraphs
+                                className="cursor-pointer"
+                            />
+                        </motion.div>
 
                         <motion.div
                             className="hero-actions"
@@ -204,25 +298,14 @@ function Landing() {
                                 exit={{ opacity: 0 }}
                                 onClick={() => setIsTrailerOpen(false)}
                             >
-                                {/* BRAND CONTEXT HEADER */}
-                                <motion.div
-                                    className="modal-header"
-                                    initial={{ opacity: 0, y: -20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3, duration: 0.5 }}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <div className="modal-label">LIMITED DROP 07</div>
-                                    <h2 className="modal-title">TITAN ALPHA – OFFICIAL PROMO</h2>
-                                    <p className="modal-desc">Precision-engineered collectibles. Verified authenticity. Elite release.</p>
-                                </motion.div>
+                                {/* BRAND CONTEXT HEADER REMOVED FOR IMMERSION */}
 
                                 <motion.div
                                     className="video-modal-content"
                                     layoutId="trailer-video-box"
                                     layout
                                     onClick={(e) => e.stopPropagation()}
-                                    transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                                     style={{ borderRadius: '0px' }}
                                 >
                                     {/* Close Button Inside or Outside? User said Top-Right. 
@@ -231,20 +314,23 @@ function Landing() {
                                         User: "Add Brand Context Header... Above video... Close button top-right". 
                                         I'll put it inside content but ensure z-index/position fits. 
                                         Actually, "Angular bordered button... same style as Explore". */}
-                                    <button className="modal-close-btn" onClick={() => setIsTrailerOpen(false)}>
-                                        <span>CLOSE</span>
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
-                                    </button>
+                                    <div className="video-inner-frame">
+                                        <button className="modal-close-btn" onClick={() => setIsTrailerOpen(false)}>
+                                            <span>CLOSE</span>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+                                        </button>
 
-                                    <div className="video-accent-line" /> {/* Horizontal Accent Line */}
+                                        <div className="video-accent-line" /> {/* Horizontal Accent Line */}
 
-                                    <video
-                                        className="full-promo-video"
-                                        src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-                                        autoPlay
-                                        controls
-                                        playsInline
-                                    />
+                                        <video
+                                            className="full-promo-video"
+                                            src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                                            autoPlay
+                                            controls={false}
+                                            playsInline
+                                            loop
+                                        />
+                                    </div>
                                 </motion.div>
                             </motion.div>
                         )}
@@ -263,7 +349,7 @@ function Landing() {
                             >
                                 {/* TEXT INSIDE CARDS ADDED */}
                                 <div className="card-content">
-                                    <div className="card-name">{avatar.name.split(' ')[0]}</div>
+                                    <div className="card-name">{avatar.name}</div>
                                     <div className="card-sub">{avatar.label}</div>
                                 </div>
                             </motion.div>
@@ -290,7 +376,7 @@ function Landing() {
                         </div>
                     </motion.div>
 
-                </div>
+                </motion.div>
             )}
         </>
     );

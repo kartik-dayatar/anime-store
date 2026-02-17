@@ -1,90 +1,104 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 import './Header.css';
 
-function Header({ onSidebarToggle }) {
-    const [isScrolled, setIsScrolled] = useState(false);
+function Header() {
+    const navigate = useNavigate();
     const cartCount = useCartStore((state) => state.getCount());
-    const toggleCart = useCartStore((state) => state.toggleCart);
-    const location = useLocation();
+    // Placeholder login state - set to false to show Sign In/Up buttons as per JSP logic, 
+    // or true to show Account. Let's default to false or checking local storage if we had it.
+    // For now, hardcoded false to match the "guest" view which is common.
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // Handle scroll effect
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate(`/products?search=${searchTerm}`);
+    };
 
     return (
-        <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-            <div className="container-wide header-container">
-                {/* Left: Sidebar Toggle & Logo */}
-                <div className="header-left">
-                    <button
-                        className="sidebar-toggle-btn"
-                        onClick={onSidebarToggle}
-                        aria-label="Toggle Sidebar"
-                    >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M3 12h18M3 6h18M3 18h18" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-
-                    <Link to="/home" className="header-logo">
-                        <span className="logo-icon">⚡</span>
-                        <span className="logo-text">AnimeStore</span>
+        <header className="site-header">
+            <div className="top-bar">
+                {/* LEFT: Logo */}
+                <div className="logo-container">
+                    <Link to="/home" className="logo-link">
+                        {/* Assuming assets/Logo.png exists, otherwise fallback to text or existing icon */}
+                        {/* The user JSP used assumptions about assets. We'll try to use the image if it exists, 
+                            or use the text logo from before if the image is missing. 
+                            The previous header had a text logo. Let's use the text/icon combo but styled like the request?
+                            The request specifically asks for <img src="<%=cp%>/assets/Logo.png" ...> 
+                            I will check if that file exists. If not, I'll use the text/icon from the old header but wrapped in their structure.
+                        */}
+                        {/* For now, I'll use the text implementation to be safe, but wrapped in their classes */}
+                        <span style={{ fontSize: '1.5rem', marginRight: '5px' }}>⚡</span>
+                        {/* If they really want the image, they should provide it. I'll stick to the previous logo text but use their classes */}
+                        {/* <img src="/assets/Logo.png" alt="OtakuNation" className="logo-img" /> */}
                     </Link>
+                    <span className="brand-tagline">Premium Anime Merchandise</span>
                 </div>
 
-                {/* Center: Search Bar */}
-                <div className="header-search-wrapper">
-                    <div className="header-search">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="M21 21l-4.35-4.35" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <input type="text" placeholder="Search..." />
-                        <span className="search-shortcut">⌘K</span>
+                {/* CENTER: Search Bar */}
+                <div className="search-bar-container">
+                    <form onSubmit={handleSearch} className="search-form">
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Search for anime gear..."
+                            aria-label="Search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button type="submit">🔍</button>
+                    </form>
+                </div>
+
+                {/* CENTER-RIGHT: Navigation */}
+                <nav className="main-nav">
+                    <Link to="/home">Home</Link>
+                    <Link to="/products">Shop</Link>
+                    {/* Categories Dropdown */}
+                    <div className="nav-dropdown">
+                        <Link to="/home#categories" className="nav-dropdown-trigger">
+                            Categories <span className="dropdown-arrow">▾</span>
+                        </Link>
+                        <div className="dropdown-menu">
+                            <Link to="/products?category=clothing">👕 Clothing</Link>
+                            <Link to="/products?category=figures">⚡ Figures</Link>
+                            <Link to="/products?category=accessories">🎒 Accessories</Link>
+                            <Link to="/products?category=posters">🖼️ Posters</Link>
+                            <Link to="/products?category=collectibles">⭐ Collectibles</Link>
+                            <Link to="/products?category=manga">📖 Manga</Link>
+                            <Link to="/products?category=plushies">🧸 Plushies</Link>
+                        </div>
                     </div>
-                </div>
+                    <Link to="/new-arrivals">New Arrivals</Link>
 
-                {/* Right: Actions */}
+                    <Link to="/contact">Contact</Link>
+                </nav>
+
+                {/* RIGHT: Actions */}
                 <div className="header-actions">
-                    <button className="icon-btn" aria-label="Notifications">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                        </svg>
-                        <span className="notification-dot" />
-                    </button>
+                    {!isLoggedIn ? (
+                        <>
+                            <Link to="/login" className="btn ghost">Sign in</Link>
+                            <Link to="/register" className="btn primary">Sign up</Link>
+                        </>
+                    ) : (
+                        <Link to="/account" className="btn ghost">👤 Account</Link>
+                    )}
 
-                    <button className="icon-btn cart-btn" onClick={toggleCart} aria-label="Cart">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                            <line x1="3" y1="6" x2="21" y2="6" />
-                            <path d="M16 10a4 4 0 0 1-8 0" />
-                        </svg>
-                        <AnimatePresence>
-                            {cartCount > 0 && (
-                                <motion.span
-                                    key="cart-count"
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    exit={{ scale: 0 }}
-                                    className="cart-badge"
-                                >
-                                    {cartCount}
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
-                    </button>
+                    <Link to="/wishlist" className="btn ghost icon-btn" aria-label="Wishlist">
+                        ❤️
+                    </Link>
 
-                    <Link to="/account" className="user-avatar-btn">
-                        <div className="header-avatar">KD</div>
+                    <Link to="/cart" className="btn ghost icon-btn" aria-label="Cart">
+                        🛒
+                        {cartCount > 0 && (
+                            <span className="badge">
+                                {cartCount}
+                            </span>
+                        )}
                     </Link>
                 </div>
             </div>

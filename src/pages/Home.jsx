@@ -1,272 +1,325 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import ProductCard from '../components/ProductCard/ProductCard';
-import ScarcityBar from '../components/ui/ScarcityBar';
-import DropCountdown from '../components/ui/DropCountdown';
-import CollectorBadge from '../components/ui/CollectorBadge';
-import { categories, getTrendingProducts } from '../data/products';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
-    staggerContainer, staggerContainerSlow, staggerItem,
-    heroCardEntrance, floatAnimation, sectionReveal,
-    hoverScaleSubtle, hoverLift, tapScale
-} from '../utils/motionVariants';
+    heroSlides,
+    statsData,
+    animeList,
+    trendingProducts,
+    freshDrops,
+    whyUsData,
+    reviewsData,
+    newsData,
+    blogData
+} from '../data/homeData';
 import './Home.css';
 
 function Home() {
-    const scrollRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: scrollRef });
-    const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
-    const trending = getTrendingProducts();
+    const navigate = useNavigate();
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const scrollTrackRef = useRef(null);
+
+    // Carousel Auto-Play
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+
+    // Scroll Logic
+    const scrollLeft = () => {
+        if (scrollTrackRef.current) scrollTrackRef.current.scrollBy({ left: -260, behavior: 'smooth' });
+    };
+    const scrollRight = () => {
+        if (scrollTrackRef.current) scrollTrackRef.current.scrollBy({ left: 260, behavior: 'smooth' });
+    };
+
+    // Fade In Observer Replacement
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Back to top logic
+        const handleScroll = () => {
+            const btn = document.getElementById('backToTop');
+            if (btn) btn.classList.toggle('visible', window.scrollY > 400);
+        };
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
-        <div className="home-dashboard" ref={scrollRef}>
-            {/* ===== HERO DASHBOARD CARD ===== */}
-            <section className="home-hero-wrapper">
-                <div className="container-wide">
-                    <motion.div
-                        className="hero-card glass"
-                        variants={heroCardEntrance}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        <div className="hero-content">
-                            <motion.div
-                                className="hero-badge"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.2 }}
-                            >
-                                <CollectorBadge serial="001" total="500" label="Satoru Gojo — Exclusive Drop" />
-                            </motion.div>
+        <div className="home-wrapper">
 
-                            <motion.h1
-                                className="hero-title"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3, duration: 0.6 }}
-                            >
-                                The <span className="gradient-text">Infinite Void</span> Collection
-                            </motion.h1>
-
-                            <motion.p
-                                className="hero-subtitle"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                            >
-                                Premium 1/7 scale figures featuring translucent domain expansion effects.
-                                Only 500 units available worldwide.
-                            </motion.p>
-
-                            <motion.div
-                                className="hero-actions"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6 }}
-                            >
-                                <Link to="/products?category=figures" className="btn btn-primary btn-lg">
-                                    Shop Collection
-                                </Link>
-                                <Link to="/new-arrivals" className="btn btn-secondary btn-lg">
-                                    View Lookbook
-                                </Link>
-                            </motion.div>
-
-                            <motion.div
-                                className="hero-availability"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.8 }}
-                            >
-                                <ScarcityBar sold={423} total={500} label="Claimed Units" />
-                            </motion.div>
-                        </div>
-
-                        <div className="hero-visual">
-                            <motion.div
-                                className="hero-image-container"
-                                initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                                animate={{ opacity: 1, scale: 1, x: 0 }}
-                                transition={{ delay: 0.4, duration: 0.8, type: 'spring' }}
-                            >
-                                <img
-                                    src="https://picsum.photos/seed/gojo-hero/800/1000"
-                                    alt="Premiums Figure Showcase"
-                                    className="hero-image"
-                                />
-                                <div className="hero-overlay-gradient" />
-                            </motion.div>
-
-                            {/* Floating Metadata Cards */}
-                            {/* Floating Metadata Cards */}
-                            <motion.div
-                                className="float-card-wrapper"
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1 }}
-                                style={{ position: 'absolute', top: '10%', right: '-20px', zIndex: 3 }}
-                            >
-                                <motion.div
-                                    className="float-card glass"
-                                    animate={floatAnimation}
-                                >
-                                    <span className="float-label">Resale Value</span>
-                                    <span className="float-value">↗ +240%</span>
-                                </motion.div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* ===== CONTINUE SHOPPING / CATEGORIES ===== */}
-            <section className="section-continue">
-                <div className="container-wide">
-                    <motion.h3
-                        className="section-label"
-                        variants={sectionReveal}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                    >
-                        Browse Categories
-                    </motion.h3>
-
-                    <motion.div
-                        className="category-scroll-container"
-                        variants={staggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-50px' }}
-                    >
-                        {categories.map((cat) => (
-                            <motion.div key={cat.id} variants={staggerItem}>
-                                <Link to={`/products?category=${cat.id}`} className="category-pill-card">
-                                    <span className="cat-icon">{cat.icon}</span>
-                                    <span className="cat-name">{cat.name}</span>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* ===== TRENDING DROPS ===== */}
-            <section className="section section-alt">
-                <div className="container-wide">
-                    <div className="section-header">
-                        <motion.h2
-                            className="section-title"
-                            variants={sectionReveal}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
+            {/* 1. HERO CAROUSEL */}
+            <section className="hero-carousel" id="hero">
+                <div className="carousel-track">
+                    {heroSlides.map((slide, index) => (
+                        <div
+                            key={index}
+                            className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}
+                            style={{ background: slide.bg }}
                         >
-                            Trending Drops
-                        </motion.h2>
-                        <Link to="/products" className="btn btn-ghost">View All →</Link>
-                    </div>
-
-                    <motion.div
-                        className="product-grid"
-                        variants={staggerContainerSlow}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                    >
-                        {trending.map((product, i) => (
-                            <ProductCard key={product.id} product={product} index={i} />
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* ===== PREMIUM COLLECTOR SECTION ===== */}
-            <section className="section collector-section">
-                <div className="container-wide">
-                    <div className="collector-grid">
-                        <motion.div
-                            className="collector-info"
-                            variants={sectionReveal}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                        >
-                            <span className="badge badge-warning">Coming Soon</span>
-                            <h2 className="section-title" style={{ marginTop: '1rem' }}>
-                                Next Major Drop
-                            </h2>
-                            <p className="section-subtitle">
-                                The highly anticipated Chainsaw Man collection drops in standard and limited collector's editions.
-                            </p>
-
-                            <div className="countdown-wrapper">
-                                <DropCountdown targetDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)} />
-                            </div>
-
-                            <motion.button
-                                className="btn btn-primary btn-lg"
-                                style={{ marginTop: '2rem', width: '100%' }}
-                                whileHover={hoverLift}
-                                whileTap={tapScale}
-                            >
-                                Join Waitlist
-                            </motion.button>
-                        </motion.div>
-
-                        <motion.div
-                            className="collector-preview-card glass"
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <div className="preview-image-wrapper">
-                                <img src="https://picsum.photos/seed/pochita/600/600" alt="Preview" />
-                                <div className="preview-overlay">
-                                    <CollectorBadge serial="???" total="Limited" label="Prototype" />
+                            <div className="container slide-layout">
+                                <div className="slide-content">
+                                    <span className="slide-badge">{slide.badge}</span>
+                                    <h1 className="slide-title">{slide.title}</h1>
+                                    <p className="slide-subtitle">{slide.subtitle}</p>
+                                    <div className="slide-actions">
+                                        <button onClick={() => navigate(slide.primaryBtn.link)} className="btn primary btn-lg">
+                                            {slide.primaryBtn.text}
+                                        </button>
+                                        <button onClick={() => navigate(slide.secondaryBtn.link)} className="btn ghost-light btn-lg">
+                                            {slide.secondaryBtn.text}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="slide-visual">
+                                    {slide.visuals.map((vis, i) => (
+                                        <div key={i} className={`hero-float-card ${vis.class}`}>
+                                            <div className="float-img" style={{ background: vis.bg }}></div>
+                                            <span>{vis.text}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <div className="preview-details">
-                                <h3>Pochita Life-Size Plush</h3>
-                                <p>Authentic dimensions, premium fabric.</p>
+                        </div>
+                    ))}
+                </div>
+                <button className="carousel-arrow carousel-prev" onClick={prevSlide} aria-label="Previous">&#10094;</button>
+                <button className="carousel-arrow carousel-next" onClick={nextSlide} aria-label="Next">&#10095;</button>
+                <div className="carousel-dots">
+                    {heroSlides.map((_, i) => (
+                        <button
+                            key={i}
+                            className={`dot ${i === currentSlide ? 'active' : ''}`}
+                            onClick={() => setCurrentSlide(i)}
+                        ></button>
+                    ))}
+                </div>
+            </section>
+
+            {/* 2. STATS STRIP */}
+            <section className="stats-strip">
+                <div className="container">
+                    <div className="stats-row">
+                        {statsData.map((stat, i) => (
+                            <div key={i} className="stat-item fade-in">
+                                <span className="stat-icon">{stat.icon}</span>
+                                <div><strong>{stat.strong}</strong><p>{stat.text}</p></div>
                             </div>
-                        </motion.div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* ===== NEWSLETTER CTA ===== */}
-            <section className="section section-alt newsletter-wrapper">
-                <div className="container-wide">
-                    <motion.div
-                        className="newsletter-dashboard-card glass"
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div className="newsletter-content">
-                            <h2>Join the Inner Circle</h2>
-                            <p>Get early access code for every major drop. No spam, just anime.</p>
+            {/* 3. SHOP BY ANIME */}
+            <section className="section" id="shop-anime">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>Shop by Anime</h2>
+                            <p>Find merch from your favorite series</p>
                         </div>
-                        <form className="newsletter-form">
-                            <input type="email" placeholder="collector@bgmail.com" />
-                            <motion.button
-                                type="submit"
-                                className="btn btn-primary"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={tapScale}
-                            >
-                                Subscribe
-                            </motion.button>
-                        </form>
-                    </motion.div>
+                        <button onClick={() => navigate('/products')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>View All &#8594;</button>
+                    </div>
+                    <div className="anime-scroll-wrapper">
+                        <button className="scroll-arrow scroll-left" onClick={scrollLeft} aria-label="Scroll left">&#10094;</button>
+                        <div className="anime-scroll-track" ref={scrollTrackRef}>
+                            {animeList.map((anime, i) => (
+                                <div key={i} onClick={() => navigate(`/products?anime=${anime.link}`)} className="anime-card" style={{ cursor: 'pointer' }}>
+                                    <div className="anime-card-img" style={{ background: anime.bg }}></div>
+                                    <h3>{anime.name}</h3><span className="anime-card-count">{anime.count}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="scroll-arrow scroll-right" onClick={scrollRight} aria-label="Scroll right">&#10095;</button>
+                    </div>
                 </div>
             </section>
+
+            {/* 4. TRENDING PRODUCTS */}
+            <section className="section section-alt" id="trending">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>Trending Now 🔥</h2>
+                            <p>Most popular picks this week</p>
+                        </div>
+                        <button onClick={() => navigate('/products?type=trending')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>See All &#8594;</button>
+                    </div>
+                    <div className="trending-grid">
+                        {trendingProducts.map((item) => (
+                            <div key={item.id} onClick={() => navigate(`/product/${item.id}`)} className="trending-card fade-in" style={{ cursor: 'pointer' }}>
+                                <div className="trending-img" style={{ background: item.bg }}>
+                                    <span className="trending-badge">{item.badge}</span>
+                                </div>
+                                <div className="trending-info">
+                                    <h3>{item.name}</h3>
+                                    <p className="trending-anime">{item.anime}</p>
+                                    <div className="trending-bottom"><span className="trending-price">{item.price}</span><span className="trending-rating">⭐ {item.rating}</span></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* FRESH DROPS PREVIEW */}
+            <section className="fresh-drops-section">
+                <div className="container">
+                    <div className="fresh-drops-header fade-in">
+                        <div>
+                            <h2 className="fresh-drops-title">Fresh Drops 🔥</h2>
+                            <p className="fresh-drops-sub">Just landed. Limited stock.</p>
+                        </div>
+                        <button onClick={() => navigate('/new-arrivals')} className="fresh-drops-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>View All &#8594;</button>
+                    </div>
+                    <div className="fresh-drops-grid">
+                        {freshDrops.map((item, i) => (
+                            <div key={i} onClick={() => navigate('/new-arrivals')} className="fd-card fade-in" style={{ cursor: 'pointer' }}>
+                                <div className="fd-card-img" style={{ background: item.bg }}>
+                                    <span className="fd-badge">Just Released</span>
+                                </div>
+                                <div className="fd-card-body">
+                                    <h3>{item.name}</h3><span className="fd-price">{item.price}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 5. WHY US */}
+            <section className="section" id="why-us">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>Why OtakuNation?</h2>
+                            <p>The trusted choice for anime fans worldwide</p>
+                        </div>
+                    </div>
+                    <div className="why-grid">
+                        {whyUsData.map((item, i) => (
+                            <div key={i} className="why-card fade-in">
+                                <div className="why-icon">{item.icon}</div>
+                                <h3>{item.title}</h3>
+                                <p>{item.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 6. CUSTOMER REVIEWS */}
+            <section className="section section-alt" id="reviews">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>What Our Customers Say</h2>
+                            <p>Real reviews from real otaku</p>
+                        </div>
+                    </div>
+                    <div className="reviews-grid">
+                        {reviewsData.map((review, i) => (
+                            <div key={i} className="review-card fade-in">
+                                <div className="review-stars">⭐⭐⭐⭐⭐</div>
+                                <p className="review-text">{review.text}</p>
+                                <div className="review-author">
+                                    <div className="review-avatar" style={{ background: review.bg }}>{review.initial}</div>
+                                    <div><strong>{review.author}</strong><span>Verified Buyer</span></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 7. ANIME NEWS */}
+            <section className="section" id="news">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>Latest Anime News</h2>
+                            <p>Stay updated with the otaku world</p>
+                        </div>
+                    </div>
+                    <div className="news-grid">
+                        {newsData.map((news, i) => (
+                            <article key={i} className="news-card fade-in">
+                                <div className="news-img" style={{ background: news.bg }}></div>
+                                <div className="news-body"><span className="news-tag">{news.tag}</span>
+                                    <h3>{news.title}</h3>
+                                    <p>{news.text}</p><a href="#" className="news-link">Read More &#8594;</a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 8. BLOG */}
+            <section className="section section-alt" id="blog">
+                <div className="container">
+                    <div className="section-header fade-in">
+                        <div>
+                            <h2>From the Blog</h2>
+                            <p>Guides, spotlights, and otaku culture</p>
+                        </div>
+                        <a href="#" className="section-link">All Posts &#8594;</a>
+                    </div>
+                    <div className="blog-grid">
+                        {blogData.map((post, i) => (
+                            <article key={i} className="blog-card fade-in">
+                                <div className="blog-img" style={{ background: post.bg }}></div>
+                                <div className="blog-body"><span className="blog-date">{post.date}</span>
+                                    <h3>{post.title}</h3>
+                                    <p>{post.text}</p><a href="#" className="blog-link">Read Article &#8594;</a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 9. NEWSLETTER */}
+            <section className="newsletter-section" id="newsletter">
+                <div className="newsletter-bg-animate"></div>
+                <div className="container newsletter-inner fade-in">
+                    <h2>Stay in the Loop</h2>
+                    <p>Get exclusive drops, early access to sales, and anime news delivered to your inbox.</p>
+                    <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+                        <input type="email" placeholder="your@email.com" required aria-label="Email address" />
+                        <button type="submit" className="btn primary btn-lg">Subscribe</button>
+                    </form>
+                    <span className="newsletter-note">No spam, ever. Unsubscribe anytime.</span>
+                </div>
+            </section>
+
+            {/* Back to Top */}
+            <button className="back-to-top" id="backToTop" aria-label="Back to top" onClick={scrollToTop}>&#8593;</button>
+
         </div>
     );
 }
 
 export default Home;
+
+

@@ -16,8 +16,8 @@
     --c-accent: #38bdf8;
     /* Muted Cyan */
     --c-accent-dim: rgba(56, 189, 248, 0.2);
-    --c-border: rgba(255, 255, 255, 0.15);
-    --c-border-hover: rgba(255, 255, 255, 0.5);
+    --c-border: rgba(255, 255, 255, 0.3);
+    --c-border-hover: rgba(255, 255, 255, 0.6);
 
     font-family: 'Space Grotesk', sans-serif;
     background: radial-gradient(circle at 50% 50%, var(--c-bg-end) 0%, var(--c-bg-start) 100%);
@@ -106,12 +106,11 @@
     inset: 0;
     border: 1px solid var(--c-border);
     transition: border-color 0.3s ease;
-    clip-path: polygon(220px 0,
+    clip-path: polygon(320px 0,
             calc(100% - 40px) 0, 100% 40px,
             100% calc(100% - 40px), calc(100% - 40px) 100%,
             40px 100%, 0 calc(100% - 40px),
-            0 60px,
-            60px 0);
+            0 100px);
 }
 
 /* LOGO POSITIONING */
@@ -119,7 +118,34 @@
     position: absolute;
     top: 30px;
     left: 60px;
-    z-index: 30;
+    z-index: 1001;
+    /* Above video modal (1000) */
+    padding-bottom: 8px;
+    /* Space for line */
+    /* Edgy Separator Line */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-area::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    /* Overlap border bottom */
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--c-accent);
+    box-shadow: 0 0 10px var(--c-accent);
+}
+
+.logo-area::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 6px;
+    height: 2px;
+    background: var(--c-text-muted);
 }
 
 .logo-text {
@@ -134,12 +160,103 @@
 /* TOP RIGHT UI */
 .top-right-ui {
     position: absolute;
-    top: 50px;
-    right: 80px;
-    z-index: 30;
+    top: 60px;
+    right: 100px;
+    z-index: 100;
+    /* Ensure above overlay */
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
+}
+
+/* MENU OVERLAY - CARD STYLE */
+.menu-overlay {
+    position: absolute;
+    top: 100px;
+    /* Below the top UI row */
+    right: 100px;
+    /* Aligned with UI */
+    width: 380px;
+    height: auto;
+    min-height: 450px;
+    background: #000;
+    z-index: 110;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 40px;
+    /* Chamfered Corners */
+    clip-path: polygon(20px 0,
+            calc(100% - 20px) 0,
+            100% 20px,
+            100% calc(100% - 20px),
+            calc(100% - 20px) 100%,
+            20px 100%,
+            0 calc(100% - 20px),
+            0 20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.menu-overlay::before {
+    display: none;
+}
+
+.menu-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--c-accent), transparent);
+    opacity: 0.5;
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.menu-item {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--c-text);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-item:hover {
+    color: var(--c-accent);
+    transform: translateX(10px);
+}
+
+.menu-arrow {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    color: var(--c-accent);
+}
+
+.menu-item:hover .menu-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.menu-item.highlight {
+    margin-top: 40px;
+    font-size: 1rem;
+    color: var(--c-text-muted);
+}
+
+.menu-item.highlight:hover {
+    color: #fff;
 }
 
 /* LOGIN BUTTON - NOW HAS EXPLORE ANIMATION */
@@ -213,14 +330,61 @@
     width: 32px;
 }
 
+/* CENTRAL CHARACTER */
+.central-character {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centered */
+    width: 100vh;
+    /* Larger coverage */
+    height: 100vh;
+    z-index: 5;
+    /* Behind text (20), above BG (0) */
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.character-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.character-placeholder {
+    width: 60%;
+    height: 80%;
+    /* Abstract placeholder shape */
+    clip-path: polygon(20% 0, 100% 0, 100% 85%, 80% 100%, 0 100%, 0 15%);
+    opacity: 0.1;
+    /* Very subtle */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
 /* HERO SECTION */
 .hero-container {
     position: absolute;
-    top: 25%;
-    left: 80px;
+    top: 50%;
+    transform: translateY(calc(-50% - 50px));
+    left: 100px;
     z-index: 20;
     max-width: 600px;
-    /* Constrain width for description */
+}
+
+.hero-version-label {
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05);
+    position: absolute;
+    top: -80px;
+    left: -20px;
+    z-index: -1;
+    line-height: 1;
 }
 
 .hero-title {
@@ -233,17 +397,27 @@
     margin-bottom: 24px;
     /* Reduced spacing */
     letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Lift off background */
 }
 
 .hero-desc {
     font-size: 1rem;
     line-height: 1.6;
     color: var(--c-text-muted);
-    max-width: 480px;
+    max-width: 420px;
     margin-bottom: 40px;
     font-weight: 400;
     border-left: 2px solid var(--c-accent-dim);
     padding-left: 16px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+    /* Readability */
+    padding: 10px 16px;
+    backdrop-filter: blur(4px);
 }
 
 /* HERO BUTTON - NOW MATTE OUTLINE STYLE (Like old Login) */
@@ -400,59 +574,92 @@
 }
 
 /* VIDEO MODAL STYLES */
+/* VIDEO MODAL STYLES - FULL SCREEN THEME */
 .video-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(12, 17, 27, 0.95);
-    /* Deep Theme Blue */
-    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.9);
+    /* Darker background */
+    backdrop-filter: blur(10px);
+    /* Lower blur for performance */
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px;
+    padding: 0;
+    /* Remove padding for full immersion */
 }
 
 .video-modal-content {
     position: relative;
+    width: 96vw;
+    height: 92vh;
+    max-width: 1800px;
+    background: rgba(255, 255, 255, 0.9);
+    /* THE BORDER COLOR */
+    padding: 3px;
+    /* THE BORDER THICKNESS */
+
+    /* Define Clip Path Variable to Share */
+    --modal-clip: polygon(240px 0,
+            calc(100% - 40px) 0,
+            100% 40px,
+            100% calc(100% - 40px),
+            calc(100% - 40px) 100%,
+            40px 100%,
+            0 calc(100% - 40px),
+            0 120px,
+            40px 80px,
+            180px 80px);
+    clip-path: var(--modal-clip);
+
+    /* Reduced shadow blur for performance during animation */
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.1);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-inner-frame {
     width: 100%;
-    max-width: 1200px;
-    aspect-ratio: 16/9;
+    height: 100%;
     background: #000;
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--c-border);
-    /* Futuristic Angular Borders */
-    clip-path: polygon(0 0,
-            100% 0,
-            100% calc(100% - 30px), calc(100% - 30px) 100%,
-            30px 100%, 0 calc(100% - 30px));
+    clip-path: var(--modal-clip);
+    position: relative;
+    overflow: hidden;
+    /* Ensure video stays inside */
 }
 
 .video-accent-line {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 120px;
-    height: 2px;
-    background: var(--c-accent);
+    left: 330px;
+    /* Align with new arch start */
+    right: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-accent), transparent);
     z-index: 10;
-    box-shadow: 0 0 10px var(--c-accent);
+    opacity: 0.5;
+    width: auto;
 }
 
 .full-promo-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    /* Ensure video isn't cropped */
     outline: none;
+    background: #050505;
 }
 
-/* EXPLORE STYLE CLOSE BUTTON */
+/* EXPLORE STYLE CLOSE BUTTON - REPOSITIONED INSIDE */
 .modal-close-btn {
     position: absolute;
-    top: -80px;
-    /* Position relative to video content container placement */
-    right: 0;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    top: 30px;
+    right: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--c-border);
     color: var(--c-text);
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.8rem;
@@ -464,10 +671,15 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 24px;
-    /* Angular top-right/bottom-left like Explore? Or strict rect? User said "Angular bordered" */
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-    overflow: hidden;
+    padding: 10px 20px;
+    z-index: 20;
+    backdrop-filter: blur(4px);
+}
+
+.modal-close-btn:hover {
+    background: var(--c-accent);
+    color: #000;
+    border-color: var(--c-accent);
 }
 
 .modal-close-btn::before {

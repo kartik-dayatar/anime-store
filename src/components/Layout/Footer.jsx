@@ -1,80 +1,68 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import { useToast } from '../ui/Toast'; // Assuming we use the existing global ToastProvider
 
 function Footer() {
+    const { addToast } = useToast();
+
+    // Check URL params for 'toast' (e.g. ?toast=added) - User requested logic
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('toast') === 'added') {
+            addToast('Item added to cart successfully!', 'success');
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [addToast]);
+
     return (
-        <footer className="footer">
-            <div className="container-wide">
-                <div className="footer-grid">
-                    {/* Brand */}
-                    <div className="footer-brand">
-                        <Link to="/" className="footer-logo">
-                            <div className="footer-logo-icon">⛩️</div>
-                            <div className="footer-logo-text">
-                                Anime<span>Store</span>
-                            </div>
+        <footer className="site-footer">
+            <div className="footer-top">
+                {/* Col 1: Brand */}
+                <div className="footer-brand">
+                    <div className="logo">
+                        <Link to="/">
+                            <img src="/assets/Logo.png" alt="OtakuNation" style={{ height: '32px', width: 'auto' }} />
                         </Link>
-                        <p className="footer-desc">
-                            Your ultimate destination for premium anime merchandise. From collectible figures to
-                            stylish apparel, we bring your favorite anime worlds to life.
-                        </p>
-                        <div className="footer-socials">
-                            <a href="#" className="social-link" aria-label="Twitter">𝕏</a>
-                            <a href="#" className="social-link" aria-label="Instagram">📷</a>
-                            <a href="#" className="social-link" aria-label="Discord">💬</a>
-                            <a href="#" className="social-link" aria-label="YouTube">▶</a>
-                        </div>
                     </div>
-
-                    {/* Quick Links */}
-                    <div className="footer-column">
-                        <h4>Shop</h4>
-                        <div className="footer-links">
-                            <Link to="/products">All Products</Link>
-                            <Link to="/products?category=figures">Figures</Link>
-                            <Link to="/products?category=apparel">Apparel</Link>
-                            <Link to="/products?category=manga">Manga</Link>
-                            <Link to="/products?category=accessories">Accessories</Link>
-                        </div>
-                    </div>
-
-                    {/* Support */}
-                    <div className="footer-column">
-                        <h4>Support</h4>
-                        <div className="footer-links">
-                            <a href="#">Help Center</a>
-                            <a href="#">Shipping Info</a>
-                            <a href="#">Returns</a>
-                            <a href="#">Order Tracking</a>
-                            <a href="#">Contact Us</a>
-                        </div>
-                    </div>
-
-                    {/* Newsletter */}
-                    <div className="footer-column">
-                        <h4>Stay Updated</h4>
-                        <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--space-4)', lineHeight: '1.6' }}>
-                            Get the latest drops, exclusive deals, and anime news delivered to your inbox.
-                        </p>
-                        <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
-                            <input
-                                type="email"
-                                className="newsletter-input"
-                                placeholder="your@email.com"
-                            />
-                            <button type="submit" className="newsletter-btn">Subscribe</button>
-                        </form>
-                    </div>
+                    <p>Your premium destination for officially licensed anime merchandise, apparel, and collectibles.</p>
                 </div>
 
-                {/* Bottom */}
-                <div className="footer-bottom">
-                    <p>© 2026 AnimeStore. All rights reserved.</p>
-                    <div className="footer-bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookies</a>
-                    </div>
+                {/* Col 2: Shop */}
+                <div className="footer-links">
+                    <h4>Shop</h4>
+                    <Link to="/">All Products</Link>
+                    <Link to="/products?type=new">New Arrivals</Link>
+                    <Link to="/products?type=trending">Best Sellers</Link>
+                    <Link to="/products?type=collections">Collections</Link>
+                </div>
+
+                {/* Col 3: Support */}
+                <div className="footer-links">
+                    <h4>Support</h4>
+                    <Link to="/contact">Contact Us</Link>
+                    <Link to="/account">My Account</Link>
+                    <Link to="/track_order">Track Order</Link>
+                    <Link to="/giftcards">Gift Cards</Link>
+                </div>
+
+                {/* Col 4: Stay Connected */}
+                <div className="footer-links">
+                    <h4>Stay Connected</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter/X</a>
+                    <a href="#">Discord Community</a>
+                    <a href="#">Newsletter</a>
+                </div>
+            </div>
+
+            <div className="footer-bottom">
+                <p>© {new Date().getFullYear()} OtakuNation. All rights reserved.</p>
+                <div className="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
                 </div>
             </div>
         </footer>
