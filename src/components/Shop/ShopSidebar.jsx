@@ -1,29 +1,96 @@
-import React from 'react';
-import { Tag, User, Filter, RotateCcw } from 'lucide-react';
+import { Tag, User, Filter, RotateCcw, Shirt, Box, Book, Watch, Footprints, Home, Brush } from 'lucide-react';
 import './ShopSidebar.css';
+
+// Sub-Category Mapping
+const subCategoryData = {
+    apparel: [
+        'Oversized Tees', 'Kanji Chest Tees', 'Hoodies',
+        'Sweatshirts', 'Jackets', 'Long Sleeves'
+    ],
+    figures: [
+        'Premium PVC', 'Resin Statues', 'Nendoroids',
+        '1/6 Scale', 'Busts'
+    ],
+    manga: [
+        'Box Sets', 'Hardcovers', 'Artbooks',
+        'Light Novels', 'Collector Editions'
+    ],
+    accessories: [
+        'Caps', 'Pendants', 'Bracelets',
+        'Keychains', 'Tote Bags', 'Pins'
+    ],
+    footwear: [
+        'Sneakers', 'Slip-ons', 'High-tops',
+        'Slides', 'Socks'
+    ],
+    'home-decor': [
+        'Art Prints', 'Canvas Art', 'Neon Signs',
+        'Wall Flags', 'Desk Mats', 'Rugs', 'Blankets'
+    ],
+    'ukiyo-district': [
+        'Ukiyo-e Prints', 'Samurai Art', 'Folklore Art',
+        'Wall Scrolls', 'Calligraphy', 'Haori'
+    ]
+};
+
+// Icon Mapping
+const categoryIcons = {
+    apparel: Shirt,
+    figures: Box,
+    manga: Book,
+    accessories: Watch,
+    footwear: Footprints,
+    'home-decor': Home,
+    'ukiyo-district': Brush
+};
 
 const ShopSidebar = ({
     activeCategory,
     activeAnime,
     priceRange,
-    toggleCategory, // unused in multi-mode, but kept for prop structure if needed
+    // toggleCategory, // Not needed for sub-filters
     toggleAnime,
     setPriceRange,
     resetFilters,
-    sidebarCategories, // New: Array of selected categories
-    toggleSidebarCategory // New: Function to toggle sidebar categories
+    sidebarCategories, // Now represents selected SUB-FILTERS
+    toggleSidebarCategory // Toggles sub-filters
 }) => {
+    // Determine what to show in the first section
+    const isMainCategorySelected = activeCategory && activeCategory !== 'all';
+
+    // Get the icon component dynamically, default to Tag
+    const SectionIcon = isMainCategorySelected ? (categoryIcons[activeCategory] || Tag) : Tag;
+    const sectionTitle = isMainCategorySelected ? 'Collection Filters' : 'Categories';
+
     return (
         <aside className="shop-sidebar">
-            {/* Categories - Only visible if activeCategory is 'all' */}
-            {activeCategory === 'all' && (
-                <div className="sidebar-group">
-                    <div className="sidebar-title">
-                        <Tag size={18} className="sidebar-icon" />
-                        <span>Categories</span>
-                    </div>
-                    <ul className="sidebar-list">
-                        {['apparel', 'figures', 'manga', 'accessories', 'footwear', 'home-decor', 'ukiyo-district'].map(cat => (
+            {/* Dynamic Filter Section */}
+            <div className="sidebar-group">
+                <div className="sidebar-title">
+                    <SectionIcon size={18} className="sidebar-icon" />
+                    <span>{sectionTitle}</span>
+                </div>
+
+                <ul className="sidebar-list">
+                    {isMainCategorySelected ? (
+                        // Context-Aware Sub-Filters
+                        subCategoryData[activeCategory]?.map(subCat => (
+                            <li className="sidebar-item" key={subCat}>
+                                <label className={`sidebar-label ${sidebarCategories.includes(subCat) ? 'active' : ''}`}>
+                                    <input
+                                        type="checkbox"
+                                        checked={sidebarCategories.includes(subCat)}
+                                        onChange={() => toggleSidebarCategory(subCat)}
+                                        className="sidebar-checkbox"
+                                    />
+                                    <span className="label-text">{subCat}</span>
+                                </label>
+                            </li>
+                        )) || <li className="sidebar-message">No specific filters available.</li>
+                    ) : (
+                        // Default Categories (when 'All' is selected)
+                        // Render checkboxes for main categories
+                        ['apparel', 'figures', 'manga', 'accessories', 'footwear', 'home-decor', 'ukiyo-district'].map(cat => (
                             <li className="sidebar-item" key={cat}>
                                 <label className={`sidebar-label ${sidebarCategories.includes(cat) ? 'active' : ''}`}>
                                     <input
@@ -32,15 +99,15 @@ const ShopSidebar = ({
                                         onChange={() => toggleSidebarCategory(cat)}
                                         className="sidebar-checkbox"
                                     />
-                                    <span className="label-text">{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                                    <span className="label-text">{cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}</span>
                                 </label>
                             </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                        ))
+                    )}
+                </ul>
+            </div>
 
-            {/* Anime Series */}
+            {/* Anime Series (Always Visible) */}
             <div className="sidebar-group">
                 <div className="sidebar-title">
                     <User size={18} className="sidebar-icon" />

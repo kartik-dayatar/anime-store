@@ -11,24 +11,24 @@ import './Products.css';
 export default function Products() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'all');
-    const [sidebarCategories, setSidebarCategories] = useState([]); // For multi-select when 'all'
+    const [selectedSubFilters, setSelectedSubFilters] = useState([]); // Renamed from sidebarCategories
     const [activeAnime, setActiveAnime] = useState([]);
     const [priceRange, setPriceRange] = useState(20000); // Max price default
     const [sortBy, setSortBy] = useState('trending');
 
     // Handle Category Filter (Top Navbar)
     const toggleCategory = (cat) => {
-        // This is controlled by the navbar, so we just set it.
-        // It's unidirectional from the navbar.
         setActiveCategory(cat);
+        // Reset sub-filters when changing main category
+        setSelectedSubFilters([]);
     };
 
-    // Handle Sidebar Category Toggle (Multi-select)
-    const toggleSidebarCategory = (cat) => {
-        if (sidebarCategories.includes(cat)) {
-            setSidebarCategories(sidebarCategories.filter(c => c !== cat));
+    // Handle Sidebar Sub-Category Toggle
+    const toggleSidebarCategory = (subCat) => {
+        if (selectedSubFilters.includes(subCat)) {
+            setSelectedSubFilters(selectedSubFilters.filter(c => c !== subCat));
         } else {
-            setSidebarCategories([...sidebarCategories, cat]);
+            setSelectedSubFilters([...selectedSubFilters, subCat]);
         }
     };
 
@@ -42,8 +42,8 @@ export default function Products() {
 
     // Reset Filters
     const resetFilters = () => {
-        setActiveCategory('all');
-        setSidebarCategories([]);
+        // Don't reset activeCategory if it's set via URL, mostly just reset the refining filters
+        setSelectedSubFilters([]);
         setActiveAnime([]);
         setPriceRange(20000);
     };
@@ -51,27 +51,27 @@ export default function Products() {
     // Debug Logging
     console.log('--- Filter State ---');
     console.log('Category:', activeCategory);
-    console.log('Anime:', activeAnime);
-    console.log('Price:', priceRange);
+    console.log('SubFilters:', selectedSubFilters);
 
     const filteredProducts = useMemo(() => {
         const result = products.filter(p => {
-            // Category Filter Logic
+            // 1. Main Category Filter
+            // This is the "Master" filter. If we are in "Apparel", we ONLY show matching apparel initially.
             if (activeCategory && activeCategory !== 'all') {
-                // Single Category Mode (Top Navbar)
                 if (p.category.toLowerCase() !== activeCategory.toLowerCase()) return false;
-            } else {
-                // Multi-Category Mode (Sidebar)
-                // If sidebarCategories has items, we MUST match at least one of them.
-                if (sidebarCategories.length > 0) {
-                    // Check if the product's category exists in the selected sidebar categories
-                    // Ensure both are compared in lower case for safety
-                    const isMatch = sidebarCategories.some(cat => cat.toLowerCase() === p.category.toLowerCase());
-                    if (!isMatch) return false;
+            }
+
+            // 2. Sub-Category Filter (Refines the Main Category)
+            // If sub-filters are active (e.g., "Hoodies"), we narrow down the list.
+            // If NO sub-filters are active, we show EVERYTHING in the main category.
+            if (selectedSubFilters.length > 0) {
+                // Check if product's subCategory matches ANY of the selected filters
+                if (!p.subCategory || !selectedSubFilters.includes(p.subCategory)) {
+                    return false;
                 }
             }
 
-            // Anime Filter
+            // 3. Anime Filter
             if (activeAnime.length > 0) {
                 const matches = activeAnime.some(anime =>
                     p.name.toLowerCase().includes(anime.replace('-', ' ')) ||
@@ -80,13 +80,11 @@ export default function Products() {
                 if (!matches) return false;
             }
 
-            // Price Filter (Range Slider)
+            // 4. Price Filter
             if (p.price > priceRange) return false;
 
             return true;
         });
-
-        console.log('Filtered Products Count:', result.length);
 
         return result.sort((a, b) => {
             if (sortBy === 'price-low') return a.price - b.price;
@@ -94,13 +92,13 @@ export default function Products() {
             if (sortBy === 'newest') return b.id - a.id;
             return b.reviews - a.reviews;
         });
-    }, [activeCategory, activeAnime, priceRange, sortBy, sidebarCategories]);
+    }, [activeCategory, activeAnime, priceRange, sortBy, selectedSubFilters]);
 
     let pageTitle = "All Products";
     let pageSubtitle = "Explore our premium collection.";
     if (activeCategory !== 'all') {
-        pageTitle = activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) + " Collection";
-        pageSubtitle = "Premium " + activeCategory + " for true fans.";
+        pageTitle = activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1);
+        pageSubtitle = `Curated ${activeCategory} for true fans.`;
     }
 
 
@@ -109,6 +107,7 @@ export default function Products() {
     useEffect(() => {
         const category = searchParams.get('category') || 'all';
         setActiveCategory(category);
+        setSelectedSubFilters([]); // Clear sub-filters on URL change
     }, [searchParams]);
 
     return (
@@ -126,7 +125,7 @@ export default function Products() {
                     toggleAnime={toggleAnime}
                     setPriceRange={setPriceRange}
                     resetFilters={resetFilters}
-                    sidebarCategories={sidebarCategories}
+                    sidebarCategories={selectedSubFilters}
                     toggleSidebarCategory={toggleSidebarCategory}
                 />
 
