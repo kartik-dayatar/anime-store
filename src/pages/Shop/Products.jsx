@@ -48,26 +48,31 @@ export default function Products() {
         setPriceRange(20000);
     };
 
-    // Debug Logging
-    console.log('--- Filter State ---');
-    console.log('Category:', activeCategory);
-    console.log('SubFilters:', selectedSubFilters);
+
 
     const filteredProducts = useMemo(() => {
         const result = products.filter(p => {
-            // 1. Main Category Filter
-            // This is the "Master" filter. If we are in "Apparel", we ONLY show matching apparel initially.
+            // 1. Category logic
             if (activeCategory && activeCategory !== 'all') {
+                // A. Specific Category Mode (e.g., "Apparel")
                 if (p.category.toLowerCase() !== activeCategory.toLowerCase()) return false;
-            }
 
-            // 2. Sub-Category Filter (Refines the Main Category)
-            // If sub-filters are active (e.g., "Hoodies"), we narrow down the list.
-            // If NO sub-filters are active, we show EVERYTHING in the main category.
-            if (selectedSubFilters.length > 0) {
-                // Check if product's subCategory matches ANY of the selected filters
-                if (!p.subCategory || !selectedSubFilters.includes(p.subCategory)) {
-                    return false;
+                // Sub-Category Refinement
+                if (selectedSubFilters.length > 0) {
+                    // Safety check for subCategory existence
+                    if (!p.subCategory || !selectedSubFilters.includes(p.subCategory)) {
+                        return false;
+                    }
+                }
+            } else {
+                // B. "All" Mode
+                // Sidebar filters act as Main Category selectors here (e.g., check "Apparel", "Figures")
+                if (selectedSubFilters.length > 0) {
+                    // Check if product's category matches any of the selected sidebar categories
+                    // Compare case-insensitive to be safe
+                    const pCat = p.category.toLowerCase();
+                    const isMatch = selectedSubFilters.some(f => f.toLowerCase() === pCat);
+                    if (!isMatch) return false;
                 }
             }
 

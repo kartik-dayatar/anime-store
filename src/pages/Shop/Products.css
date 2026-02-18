@@ -19,8 +19,8 @@
 /* Sidebar styles moved to ShopSidebar.css */
 
 .product-grid-section {
-    padding: 40px 100px;
-    /* Significant padding to squeeze cards */
+    padding: 40px;
+    /* Reduced horizontal padding for full-width feel */
     width: 100%;
 }
 

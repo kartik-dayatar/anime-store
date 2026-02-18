@@ -1,50 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ===== DESIGN SYSTEM — PREMIUM LIGHT THEME ===== */
 :root {
-  /* Accent system — Indigo / Violet */
-  --color-primary: #4f46e5;
-  --color-primary-light: #6366f1;
-  --color-primary-dark: #3730a3;
-  --color-secondary: #7c3aed;
-  --color-secondary-light: #8b5cf6;
-  --color-accent: #a78bfa;
-  --color-accent-glow: rgba(99, 102, 241, 0.18);
-
-  /* Surfaces — Warm light */
-  --color-bg: #f7f8fc;
-  --color-bg-alt: #f1f2f8;
-  --color-bg-secondary: #ecedf5;
-  --color-bg-tertiary: #e4e5ef;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f8f8fd;
-  --color-surface-active: #f0f0f7;
-  --color-border: rgba(0, 0, 0, 0.07);
-  --color-border-hover: rgba(0, 0, 0, 0.13);
-
-  /* Text — Rich charcoal */
-  --color-text: #1a1a2e;
-  --color-text-secondary: #44445a;
-  --color-text-muted: #7e7e96;
-  --color-text-inverse: #f7f8fc;
-
-  /* Status */
-  --color-success: #16a34a;
-  --color-warning: #d97706;
-  --color-error: #dc2626;
-  --color-info: #2563eb;
-
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #4f46e5, #7c3aed);
-  --gradient-hero: linear-gradient(135deg, #f0edff 0%, #f7f8fc 40%, #eef2ff 60%, #f7f8fc 100%);
-  --gradient-card: linear-gradient(160deg, rgba(79, 70, 229, 0.03), rgba(124, 58, 237, 0.015));
-  --gradient-glow: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.07) 0%, transparent 70%);
-  --gradient-ambient: radial-gradient(circle at 20% 10%, rgba(79, 70, 229, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.05), transparent 35%);
+  /* ... items ... */
 
   /* Typography */
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', 'Inter', sans-serif;
+  --font-heading: var(--font-body);
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;

@@ -63,7 +63,7 @@ const ShopSidebar = ({
     const sectionTitle = isMainCategorySelected ? 'Collection Filters' : 'Categories';
 
     return (
-        <aside className="shop-sidebar">
+        <aside className={`shop-sidebar ${activeCategory === 'ukiyo-district' ? 'ukiyo-border' : ''}`}>
             {/* Dynamic Filter Section */}
             <div className="sidebar-group">
                 <div className="sidebar-title">

@@ -148,3 +148,24 @@
     border-color: #94a3b8;
     color: #475569;
 }
+
+/* Ukiyo District Special Style */
+.shop-sidebar.ukiyo-border {
+    border-right: 2px solid #b91c1c;
+    /* Crimson border */
+    position: relative;
+    /* subtle background tint */
+    background: linear-gradient(to bottom, #fff 0%, #fffbfb 100%);
+}
+
+.shop-sidebar.ukiyo-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #b91c1c, #fbbf24);
+    /* Crimson to Gold */
+    z-index: 10;
+}

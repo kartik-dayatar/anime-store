@@ -133,36 +133,85 @@ export default function ProductDetail() {
                 </div>
             </div>
 
+            {/* Specifications Section */}
+            {product.specifications && (
+                <section className="specs-section">
+                    <h2>Product Specifications</h2>
+                    <div className="specs-grid">
+                        {Object.entries(product.specifications).map(([key, value]) => (
+                            <div className="spec-item" key={key}>
+                                <span className="spec-label">{key}</span>
+                                <span className="spec-value">{value}</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* Reviews Section */}
             <section className="reviews-section">
                 <div className="reviews-header">
                     <h2>Customer Reviews</h2>
+                    <div className="overall-rating">
+                        <span className="big-star">★</span>
+                        <span className="rating-num">{product.rating}</span>
+                        <span className="review-count">({product.reviews} global ratings)</span>
+                    </div>
                 </div>
 
-                <div className="review-card">
-                    <div className="review-user">OtakuKing99</div>
-                    <div className="rating" style={{ fontSize: '0.8rem', marginBottom: '8px' }}>★★★★★</div>
-                    <p style={{ margin: 0, color: 'var(--text-muted)' }}>
-                        Absolutely love the quality! The print is super high resolution and the fabric feels premium. arrived in 2 days.
-                    </p>
+                <div className="reviews-list">
+                    {product.reviewsList ? (
+                        product.reviewsList.map((review, idx) => (
+                            <div className="review-card" key={idx}>
+                                <div className="review-top">
+                                    <div className="review-user-avatar">{review.user.charAt(0)}</div>
+                                    <div className="review-meta">
+                                        <div className="review-user">{review.user}</div>
+                                        <div className="review-stars">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</div>
+                                    </div>
+                                    <div className="review-date">{review.date}</div>
+                                </div>
+                                <p className="review-comment">{review.comment}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="review-card">
+                            <p>No detailed reviews yet.</p>
+                        </div>
+                    )}
                 </div>
             </section>
 
-            {/* Related Products */}
+            {/* Related Products Carousel */}
             <section className="related-products">
                 <div className="related-header">
                     <h2>You may also like</h2>
                 </div>
-                <div className="shop-grid">
-                    {products.slice(0, 4).map(p => (
-                        <Link to={`/product/${p.id}`} key={p.id} className="product-card">
-                            <div className="image-placeholder tall" style={{ background: '#f1f5f9' }}>
-                                {p.images && p.images[0] && <img src={p.images[0]} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                            </div>
-                            <h3>{p.name}</h3>
-                            <p>₹{p.price.toLocaleString()}</p>
-                        </Link>
-                    ))}
+                <div className="shop-carousel-container">
+                    <div className="shop-carousel">
+                        {(() => {
+                            const related = products.filter(p => p.category === product.category && p.id !== product.id);
+                            const others = products.filter(p => p.category !== product.category);
+                            const displayList = [...related, ...others].slice(0, 8);
+
+                            return displayList.map(p => (
+                                <Link to={`/product/${p.id}`} key={p.id} className="carousel-card">
+                                    <div
+                                        className="carousel-image"
+                                        style={{
+                                            background: `linear-gradient(135deg, ${['#0f172a', '#1e3a5f', '#3b1d6e', '#0c1220', '#ef4444', '#8b5cf6'][p.id % 6]} 0%, ${['#2563eb', '#7c3aed', '#334155', '#b91c1c', '#6d28d9', '#dc2626'][p.id % 6]} 100%)`
+                                        }}
+                                    >
+                                        {/* No Image - Just Gradient */}
+                                    </div>
+                                    <div className="carousel-info">
+                                        <h4>{p.name}</h4>
+                                        <p>₹{p.price.toLocaleString()}</p>
+                                    </div>
+                                </Link>
+                            ));
+                        })()}
+                    </div>
                 </div>
             </section>
         </main>
