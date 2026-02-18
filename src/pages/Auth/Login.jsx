@@ -11,7 +11,7 @@ export default function Login() {
         e.preventDefault();
         // Verify login logic here
         console.log("Logging in with", email, password);
-        navigate('/account');
+        navigate('/home');
     };
 
     return (
