@@ -6,6 +6,8 @@ import CartDrawer from '../CartDrawer/CartDrawer';
 import { routeTransition } from '../../utils/motionVariants';
 import './Layout.css';
 
+
+
 function Layout() {
     const location = useLocation();
 
@@ -16,18 +18,10 @@ function Layout() {
                 <Header />
 
                 <main className="page-transition-wrapper">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={location.pathname}
-                            initial="initial"
-                            animate="animate"
-                            exit="exit"
-                            variants={routeTransition}
-                            style={{ minHeight: 'calc(100vh - var(--header-height))' }}
-                        >
-                            <Outlet />
-                        </motion.div>
-                    </AnimatePresence>
+                    <main className="page-transition-wrapper">
+                        <Outlet />
+                    </main>
+
                 </main>
 
                 <Footer />

@@ -1,171 +1,87 @@
 .shop-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 5vw;
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 40px;
-    background-color: var(--bg-body);
-}
-
-@media (max-width: 900px) {
-    .shop-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-.filters-sidebar {
-    position: sticky;
-    top: 20px;
-    height: fit-content;
-}
-
-.filter-group {
-    margin-bottom: 24px;
-}
-
-.filter-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--text-main);
-}
-
-.filter-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    background-color: #f8fafc;
+    /* bg-slate-50 */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
-.filter-item {
-    margin-bottom: 0;
+.shop-layout {
+    width: 100%;
+    /* Full width */
+    display: grid;
+    grid-template-columns: 256px 1fr;
+    /* Fixed 64px (w-64 equivalent) sidebar */
+    position: relative;
+    align-items: start;
 }
 
-.filter-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
+/* Sidebar styles moved to ShopSidebar.css */
 
-.filter-checkbox:hover {
-    color: var(--primary);
-}
-
-.filter-checkbox input {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    accent-color: var(--primary);
+.product-grid-section {
+    padding: 40px 100px;
+    /* Significant padding to squeeze cards */
+    width: 100%;
 }
 
 .shop-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
     flex-wrap: wrap;
     gap: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 24px;
 }
 
-.shop-title h1 {
-    font-size: 1.8rem;
-    margin: 0 0 4px;
-    color: var(--text-main);
-}
-
-.shop-title p {
-    margin: 0;
-    color: var(--text-muted);
-}
-
-.sort-select {
-    padding: 8px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    background-color: transparent;
-    cursor: pointer;
-}
-
-.sort-select:focus {
-    outline: none;
-    border-color: var(--primary);
-}
+/* ... existing styles ... */
 
 /* Shop Grid */
-.shop-grid {
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 Columns fixed */
+    gap: 40px;
+    /* Wide horizontal gap */
+    row-gap: 64px;
+    /* Very airy vertical spacing */
 }
 
-/* Products card override or reuse */
-.product-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
+.no-results {
+    text-align: center;
+    padding: 60px 0;
+    grid-column: 1 / -1;
+    color: #64748b;
+    font-size: 1.1rem;
 }
 
-.product-card h3 {
-    margin: 12px 0 4px;
-    font-size: 1rem;
-    color: var(--text-main);
-}
-
-.image-placeholder.tall {
-    padding-bottom: 125%;
-    /* Aspect ratio handling if no img */
-    background: #e2e8f0;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Pagination */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 60px;
-}
-
-.page-btn {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid #e5e7eb;
-    background: #fff;
-    color: var(--text-main);
-    font-weight: 500;
+.clear-filters-btn {
+    margin-top: 16px;
+    padding: 8px 24px;
+    background: #0f172a;
+    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
 }
 
-.page-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
+.clear-filters-btn:hover {
+    background: #334155;
 }
 
-.page-btn.active {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
+@media (max-width: 1024px) {
+    .shop-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cols on tablet */
+    }
+
+    /* In actual implementation, sidebar would be a drawer on mobile */
+    /* For now, simplified mobile view */
 }

@@ -57,21 +57,6 @@ function Header() {
                 <nav className="main-nav">
                     <Link to="/home">Home</Link>
                     <Link to="/products">Shop</Link>
-                    {/* Categories Dropdown */}
-                    <div className="nav-dropdown">
-                        <Link to="/home#categories" className="nav-dropdown-trigger">
-                            Categories <span className="dropdown-arrow">▾</span>
-                        </Link>
-                        <div className="dropdown-menu">
-                            <Link to="/products?category=clothing">👕 Clothing</Link>
-                            <Link to="/products?category=figures">⚡ Figures</Link>
-                            <Link to="/products?category=accessories">🎒 Accessories</Link>
-                            <Link to="/products?category=posters">🖼️ Posters</Link>
-                            <Link to="/products?category=collectibles">⭐ Collectibles</Link>
-                            <Link to="/products?category=manga">📖 Manga</Link>
-                            <Link to="/products?category=plushies">🧸 Plushies</Link>
-                        </div>
-                    </div>
                     <Link to="/new-arrivals">New Arrivals</Link>
 
                     <Link to="/contact">Contact</Link>

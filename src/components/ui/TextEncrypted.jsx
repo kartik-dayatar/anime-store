@@ -6,6 +6,7 @@ export const TextEncrypted = ({
     text,
     interval = 50,
     className = "",
+    paused = false,
     ...props
 }) => {
     const [outputText, setOutputText] = useState("");
@@ -18,7 +19,7 @@ export const TextEncrypted = ({
     useEffect(() => {
         let timer;
 
-        if (outputText !== text) {
+        if (!paused && outputText !== text) {
             timer = setInterval(() => {
                 if (outputText.length < text.length) {
                     setOutputText((prev) => prev + text[prev.length]);
@@ -29,7 +30,7 @@ export const TextEncrypted = ({
         }
 
         return () => clearInterval(timer);
-    }, [text, interval, outputText]);
+    }, [text, interval, outputText, paused]);
 
     const remainder =
         outputText.length < text.length

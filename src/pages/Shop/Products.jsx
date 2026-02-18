@@ -1,27 +1,35 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { products, categories } from '../../data/products';
+import ShopSidebar from '../../components/Shop/ShopSidebar';
+import CategoryBar from '../../components/Shop/CategoryBar';
+import ProductCard from '../../components/Shop/ProductCard';
+import { staggerContainer, fadeInUp } from '../../utils/motionVariants';
 import './Products.css';
 
 export default function Products() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'all');
+    const [sidebarCategories, setSidebarCategories] = useState([]); // For multi-select when 'all'
     const [activeAnime, setActiveAnime] = useState([]);
-    const [priceRange, setPriceRange] = useState([]);
+    const [priceRange, setPriceRange] = useState(20000); // Max price default
     const [sortBy, setSortBy] = useState('trending');
 
-    // Handle Category Filter
+    // Handle Category Filter (Top Navbar)
     const toggleCategory = (cat) => {
-        // Toggle behavior logic if multiple allowed, but JSP uses radio-like for category
-        // JSP: category=shirt (one at a time usually, but sidebar uses checkboxes)
-        // Let's assume single category selection for simplicity or array if we want multi
-        // JSP logic: if (category != null) ...
-        // Checkboxes imply multiple? "input type='checkbox' name='category'" => usually means multiple
-        // But the JSP logic `category.equals(...)` implies single value param processing. 
-        // We will stick to single for now to match JSP "equals", or allow multiple if logic permits.
-        // Let's do single active category for now.
-        if (activeCategory === cat) setActiveCategory('all');
-        else setActiveCategory(cat);
+        // This is controlled by the navbar, so we just set it.
+        // It's unidirectional from the navbar.
+        setActiveCategory(cat);
+    };
+
+    // Handle Sidebar Category Toggle (Multi-select)
+    const toggleSidebarCategory = (cat) => {
+        if (sidebarCategories.includes(cat)) {
+            setSidebarCategories(sidebarCategories.filter(c => c !== cat));
+        } else {
+            setSidebarCategories([...sidebarCategories, cat]);
+        }
     };
 
     const toggleAnime = (anime) => {
@@ -32,23 +40,39 @@ export default function Products() {
         }
     };
 
-    const togglePrice = (range) => {
-        if (priceRange.includes(range)) {
-            setPriceRange(priceRange.filter(r => r !== range));
-        } else {
-            setPriceRange([...priceRange, range]);
-        }
+    // Reset Filters
+    const resetFilters = () => {
+        setActiveCategory('all');
+        setSidebarCategories([]);
+        setActiveAnime([]);
+        setPriceRange(20000);
     };
 
-    const filteredProducts = useMemo(() => {
-        return products.filter(p => {
-            // Category Filter
-            if (activeCategory !== 'all' && p.category !== activeCategory) return false;
+    // Debug Logging
+    console.log('--- Filter State ---');
+    console.log('Category:', activeCategory);
+    console.log('Anime:', activeAnime);
+    console.log('Price:', priceRange);
 
-            // Anime Filter (mock property mainly, assuming category or name contains it?)
-            // We need 'series' in our product data. Let's assume mock usage or partial match on name
+    const filteredProducts = useMemo(() => {
+        const result = products.filter(p => {
+            // Category Filter Logic
+            if (activeCategory && activeCategory !== 'all') {
+                // Single Category Mode (Top Navbar)
+                if (p.category.toLowerCase() !== activeCategory.toLowerCase()) return false;
+            } else {
+                // Multi-Category Mode (Sidebar)
+                // If sidebarCategories has items, we MUST match at least one of them.
+                if (sidebarCategories.length > 0) {
+                    // Check if the product's category exists in the selected sidebar categories
+                    // Ensure both are compared in lower case for safety
+                    const isMatch = sidebarCategories.some(cat => cat.toLowerCase() === p.category.toLowerCase());
+                    if (!isMatch) return false;
+                }
+            }
+
+            // Anime Filter
             if (activeAnime.length > 0) {
-                // Check if any selected anime is in product name or description (simple text match)
                 const matches = activeAnime.some(anime =>
                     p.name.toLowerCase().includes(anime.replace('-', ' ')) ||
                     (p.description && p.description.toLowerCase().includes(anime.replace('-', ' ')))
@@ -56,30 +80,21 @@ export default function Products() {
                 if (!matches) return false;
             }
 
-            // Price Filter
-            if (priceRange.length > 0) {
-                const price = p.price; // assuming INR
-                // under-50 -> < 4000
-                // 50-100 -> 4000 - 8000
-                // over-100 -> > 8000
-                const matches = priceRange.some(range => {
-                    if (range === 'under-50') return price < 4000;
-                    if (range === '50-100') return price >= 4000 && price <= 8000;
-                    if (range === 'over-100') return price > 8000;
-                    return false;
-                });
-                if (!matches) return false;
-            }
+            // Price Filter (Range Slider)
+            if (p.price > priceRange) return false;
 
             return true;
-        }).sort((a, b) => {
+        });
+
+        console.log('Filtered Products Count:', result.length);
+
+        return result.sort((a, b) => {
             if (sortBy === 'price-low') return a.price - b.price;
             if (sortBy === 'price-high') return b.price - a.price;
             if (sortBy === 'newest') return b.id - a.id;
-            // trending -> random or reviews
             return b.reviews - a.reviews;
         });
-    }, [activeCategory, activeAnime, priceRange, sortBy]);
+    }, [activeCategory, activeAnime, priceRange, sortBy, sidebarCategories]);
 
     let pageTitle = "All Products";
     let pageSubtitle = "Explore our premium collection.";
@@ -88,120 +103,79 @@ export default function Products() {
         pageSubtitle = "Premium " + activeCategory + " for true fans.";
     }
 
+
+
+    // Sync state with URL params
+    useEffect(() => {
+        const category = searchParams.get('category') || 'all';
+        setActiveCategory(category);
+    }, [searchParams]);
+
     return (
         <main className="shop-container">
-            {/* Sidebar Filters */}
-            <aside className="filters-sidebar">
-                <div className="filter-group">
-                    <div className="filter-title">Categories</div>
-                    <ul className="filter-list">
-                        {['shirt', 't-shirt', 'pant', 'accessories', 'colab'].map(cat => (
-                            <li className="filter-item" key={cat}>
-                                <label className="filter-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        checked={activeCategory === cat}
-                                        onChange={() => toggleCategory(cat)}
-                                    />
-                                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+            {/* Category Sub-Navbar */}
+            <CategoryBar />
 
-                <div className="filter-group">
-                    <div className="filter-title">Anime</div>
-                    <ul className="filter-list">
-                        {['naruto', 'one-piece', 'demon-slayer', 'jujutsu-kaisen'].map(anime => (
-                            <li className="filter-item" key={anime}>
-                                <label className="filter-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        checked={activeAnime.includes(anime)}
-                                        onChange={() => toggleAnime(anime)}
-                                    />
-                                    {anime.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+            <div className="shop-layout">
+                {/* Sidebar Filters */}
+                <ShopSidebar
+                    activeCategory={activeCategory}
+                    activeAnime={activeAnime}
+                    priceRange={priceRange}
+                    toggleCategory={toggleCategory}
+                    toggleAnime={toggleAnime}
+                    setPriceRange={setPriceRange}
+                    resetFilters={resetFilters}
+                    sidebarCategories={sidebarCategories}
+                    toggleSidebarCategory={toggleSidebarCategory}
+                />
 
-                <div className="filter-group">
-                    <div className="filter-title">Price Range</div>
-                    <ul className="filter-list">
-                        {[
-                            { val: 'under-50', label: 'Under ₹4,000' },
-                            { val: '50-100', label: '₹4,000 - ₹8,000' },
-                            { val: 'over-100', label: 'Over ₹8,000' }
-                        ].map(range => (
-                            <li className="filter-item" key={range.val}>
-                                <label className="filter-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        checked={priceRange.includes(range.val)}
-                                        onChange={() => togglePrice(range.val)}
-                                    />
-                                    {range.label}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {/* Product Grid */}
+                <section className="product-grid-section">
+                    <div className="shop-header">
+                        <h2 className="shop-title">
+                            {activeCategory === 'all' ? 'All Products' : `${activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)}`}
+                            <span className="product-count">({filteredProducts.length} items)</span>
+                        </h2>
 
-                <button className="btn ghost" style={{ width: '100%', marginTop: '10px' }} onClick={() => {
-                    setActiveCategory('all');
-                    setActiveAnime([]);
-                    setPriceRange([]);
-                }}>
-                    Reset Filters
-                </button>
-            </aside>
-
-            {/* Main Content */}
-            <section className="shop-content">
-                <div className="shop-header">
-                    <div className="shop-title">
-                        <h1>{pageTitle}</h1>
-                        <p>{pageSubtitle}</p>
+                        <div className="sort-container">
+                            <span className="sort-label">Sort by:</span>
+                            <select
+                                className="sort-select"
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                            >
+                                <option value="trending">Trending</option>
+                                <option value="newest">Newest Arrivals</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                        </div>
                     </div>
-                    <div className="shop-actions">
-                        <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                            <option value="trending">Sort by: Trending</option>
-                            <option value="newest">Sort by: Newest</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div className="shop-grid">
-                    {filteredProducts.map(p => (
-                        <Link to={`/product/${p.id}`} key={p.id} className="product-card">
-                            <div className="image-placeholder tall" style={{ background: '#e2e8f0' }}>
-                                {p.images && p.images[0] && <img src={p.images[0]} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                            </div>
-                            <h3>{p.name}</h3>
-                            <p>₹{p.price.toLocaleString()}</p>
-                        </Link>
-                    ))}
-                    {filteredProducts.length === 0 && (
-                        <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-                            No products found.
+                    {filteredProducts.length > 0 ? (
+                        <div className="products-grid">
+                            {filteredProducts.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                >
+                                    <ProductCard product={product} />
+                                </motion.div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="no-results">
+                            <p>No products found based on your filters.</p>
+                            <button onClick={resetFilters} className="clear-filters-btn">
+                                Clear Filters
+                            </button>
                         </div>
                     )}
-                </div>
-
-                {/* Pagination */}
-                <div className="pagination">
-                    <button className="page-btn">←</button>
-                    <button className="page-btn active">1</button>
-                    <button className="page-btn">2</button>
-                    <button className="page-btn">3</button>
-                    <button className="page-btn">→</button>
-                </div>
-            </section>
+                </section>
+            </div>
         </main>
     );
 }

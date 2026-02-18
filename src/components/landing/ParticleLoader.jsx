@@ -75,17 +75,22 @@ const ParticleLoader = ({ onComplete }) => {
         };
 
         const draw = () => {
-            // Clear
-            ctx.fillStyle = colorBg;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Clear - Use clearRect for performance instead of fillRect with bg color if possible, 
+            // but since we want a black bg, fillRect is fine. optimize by not changing fillStyle if already set?
+            // Actually, clearRect is often faster and we can set canvas bg in CSS.
+            // Let's use clearRect and let CSS handle background color for the canvas element.
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Optimization: Set global styles once
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            // Global font for standard matrix chars to avoid context switching
             ctx.font = `bold 14px "Space Grotesk", monospace`;
+            ctx.fillStyle = colorGrey; // Default color
 
-            // Optimization: Single loop but branching logic minimized
-            for (let i = 0; i < grid.length; i++) {
+            // Optimization: Reduce object lookups
+            const len = grid.length;
+
+            for (let i = 0; i < len; i++) {
                 const cell = grid[i];
                 if (cell.opacity <= 0.01) continue;
 
@@ -94,11 +99,13 @@ const ParticleLoader = ({ onComplete }) => {
                     cell.char = chars[Math.floor(Math.random() * chars.length)];
                 }
 
-                // Batching: If it's a simple background char, skip transforms
-                // Brand particles need transforms for explosion/scale
+                // Batching: We assume most particles are default (grey, scale 1, etc.)
+                // If it's a simple background char, skip transforms & state changes
                 if (!cell.isBrand && cell.scale === 1 && cell.rotation === 0 && cell.circleRadius === 0) {
                     // Fast Path
-                    ctx.fillStyle = cell.color;
+                    // Only change alpha/color if needed. 
+                    // However, we just set fillStyle to colorGrey above.
+                    // We only need to set globalAlpha.
                     ctx.globalAlpha = cell.opacity;
                     ctx.fillText(cell.char, cell.x, cell.y);
                 } else {
@@ -111,7 +118,7 @@ const ParticleLoader = ({ onComplete }) => {
                     ctx.globalAlpha = cell.opacity;
                     ctx.fillStyle = cell.color;
 
-                    // Only set font if different (micro-optimization, though strict check is likely needed)
+                    // Only set font if different
                     if (cell.fontSize !== 14) {
                         ctx.font = `bold ${cell.fontSize}px "Space Grotesk", monospace`;
                     }
@@ -125,9 +132,21 @@ const ParticleLoader = ({ onComplete }) => {
                     }
 
                     ctx.restore();
-                    // Reset font for next iteration fast path if needed (or rely on next fast path setting it? No, fast path assumes it's set)
-                    // Re-setting font is safer :
-                    ctx.font = `bold 14px "Space Grotesk", monospace`;
+                    // Reset font implies we need to be careful. 
+                    // Save/Restore handles font reset for us in the next iteration's fast path?
+                    // Yes, ctx.restore() brings back the context state (including font) to what it was at ctx.save().
+                    // But we set global font *before* the loop. 
+                    // Wait, ctx.save() saves the state *at that moment*.
+                    // So if we set font to 14 before loop, save(), change font, restore() -> font is back to 14.
+                    // So we DON'T need to manually reset font here.
+                    // However, we DO need to reset fillStyle if we changed it in complex path? 
+                    // yes, ctx.restore() resets fillStyle too.
+                    // But wait, we set fillStyle = cell.color in complex path. 
+                    // In fast path, we rely on ctx.fillStyle being colorGrey.
+                    // ctx.restore() will revert fillStyle to whatever it was before ctx.save().
+                    // Before ctx.save(), fillStyle was colorGrey (set at top of loop or previous iteration?)
+                    // It was set at top of draw function.
+                    // So fast path is safe.
                 }
             }
         };

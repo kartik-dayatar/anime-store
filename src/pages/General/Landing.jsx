@@ -178,7 +178,7 @@ function Landing() {
                                                 setIsOpen(false);
                                             }}
                                         >
-                                            <span className="menu-arrow">&gt;</span> <TextEncrypted text={item.name} interval={30} />
+                                            <span className="menu-arrow">&gt;</span> <TextEncrypted text={item.name} interval={30} paused={isLoading} />
                                         </motion.div>
                                     ))}
                                     <motion.div
@@ -187,7 +187,7 @@ function Landing() {
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.4 }}
                                     >
-                                        <span className="menu-arrow">&gt;</span> <TextEncrypted text="VIEW ALL COLLECTIONS" interval={30} />
+                                        <span className="menu-arrow">&gt;</span> <TextEncrypted text="VIEW ALL COLLECTIONS" interval={30} paused={isLoading} />
                                     </motion.div>
                                 </div>
                             </motion.div>
@@ -232,6 +232,7 @@ function Landing() {
                                 text={selectedAvatar.name}
                                 interval={50}
                                 className="cursor-pointer" // signal interactivity
+                                paused={isLoading}
                             />
                         </motion.div>
 
@@ -247,6 +248,7 @@ function Landing() {
                                 text={selectedAvatar.desc}
                                 interval={4} // Super fast for paragraphs
                                 className="cursor-pointer"
+                                paused={isLoading}
                             />
                         </motion.div>
 
