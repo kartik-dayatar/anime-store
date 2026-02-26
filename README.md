@@ -1,200 +1,88 @@
 # Anime Store
 
-Anime Store is a full-stack web application built using React (Vite), Node.js, Express, and MongoDB.  
-It is designed as a modern anime merchandise e-commerce prototype featuring product browsing, cart functionality, and basic authentication.
+![Anime Store Banner](https://img.shields.io/badge/Status-Development-blue.svg) ![React](https://img.shields.io/badge/React-19.0.0-blue.svg) ![Vite](https://img.shields.io/badge/Vite-7.3.1-orange.svg) ![GSAP](https://img.shields.io/badge/Animation-GSAP%20&%20Framer-green.svg)
 
-This project was developed as an academic project and serves as a foundation for a scalable commercial anime merchandise platform.
+A modern, premium anime merchandise web store built with React and Vite. It features a sleek, cinematic interface using GSAP and Framer Motion for high-performance animations. The application is designed to be fully responsive, visually striking, and technically robust.
 
----
+## 🚀 Features
 
-## Tech Stack
+- **Storefront & Catalog**: Browse premium figures, apparel, manga, and traditional styles (Ukiyo).
+- **Interactive UI**: Rich micro-animations, cinematic transitions, and custom 3D elements powered by Three.js and GSAP.
+- **Global State**: Efficient cart and state management using Zustand.
+- **Dynamic Routing**: Segregated layout structure for main store, checkout flow, auth, and user dashboard using React Router DOM.
+- **High Performance**: Optimized loading screens, code-splitting (lazy loading) for routes, and preloader optimizations.
 
-Frontend:
-- React (Vite)
-- CSS
-- Framer Motion
-- Axios
+## 🛠️ Tech Stack
 
-Backend:
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
+- **Frontend Framework**: React 19 + Vite
+- **Styling**: Vanilla CSS (Premium Matte Aesthetic)
+- **State Management**: Zustand
+- **Animations**: GSAP, Framer Motion
+- **3D Graphics**: Three.js
+- **Routing**: React Router DOM (v7)
+- **Icons**: Lucide React
+- **Data Fetching**: Axios
 
-Other:
-- JWT Authentication
-- REST API Architecture
+## 📂 Project Structure
 
----
-
-## Features
-
-- Product listing with detailed view
-- Add to cart functionality
-- User registration and login
-- Basic authentication using JWT
-- Order placement (demo implementation)
-- Responsive UI design
-- Animated UI interactions
-
-Note: Payment gateway and advanced production-level security features are not implemented yet.
-
----
-
-## Project Structure
-
-```
-anime-store/
-│
-├── public/                 # Frontend (React + Vite)
-│   ├── src/
-│   ├── index.html
-│   └── package.json
-│
-├── src/                    # Backend source code
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── server.js
-│
-├── package.json
-├── .gitignore
-└── README.md
+```text
+src/
+├── assets/         # Static media (images, videos, fonts)
+├── components/     # Reusable UI components
+│   ├── CartDrawer/ # Cart slide-out drawer
+│   ├── Layout/     # App layout elements (Header, Footer, Sidebar)
+│   ├── ProductCard/# Reusable product display components
+│   ├── Shop/       # Shop-specific UI parts
+│   ├── landing/    # Landing page specific components
+│   └── ui/         # Generic UI primitives (Buttons, Loaders, ScarcityBar, etc.)
+├── context/        # React contexts for specific app domains
+├── data/           # Mock data and configuration (products.js, homeData.js)
+├── pages/          # Application routes mapped by domain
+│   ├── Auth/       # Login, Register
+│   ├── Checkout/   # Cart, Payment, OrderConfirmation
+│   ├── General/    # Home, Landing, Contact
+│   ├── Shop/       # Products list, Product detail
+│   └── User/       # User Account, Wishlist, OrderTracking
+├── store/          # Zustand global state (cartStore.js)
+├── styles/         # Global shared CSS modules
+└── utils/          # Utility scripts and animation definitions
 ```
 
-Adjust structure if your implementation slightly differs.
+## 📦 Getting Started
 
----
+### Prerequisites
 
-## Installation Guide
-
-### 1. Clone the Repository
+Ensure you have [Node.js](https://nodejs.org/) installed:
 
 ```bash
-git clone https://github.com/kartik-dayatar/anime-store.git
-cd anime-store
+node -v # Ensure it's active
+npm -v
 ```
 
----
+### Installation
 
-### 2. Install Backend Dependencies
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
----
+3. Build for production:
+   ```bash
+   npm run build
+   ```
 
-### 3. Install Frontend Dependencies
+## 🔧 Current Development Status
 
-```bash
-cd public
-npm install
-```
+- **UI Refinement**: Ongoing work prioritizing smooth landing animations, cinematic fullscreen trailer UI, and order tracking enhancements.
+- **Data Source**: The project currently relies on hardcoded mock JSON objects (`src/data/products.js`).
+- **Cleanup**: Unnecessary project files (e.g., legacy UI variants, redundant JSP-to-React components) are being actively pruned using internal cleanup tools.
+- **Note**: The backend (Node/MongoDB) is currently decoupled from this frontend layer, as the current repository serves purely as the presentation interface.
 
----
+## 📜 License
 
-## Environment Variables
-
-Create a `.env` file in the backend root directory with the following:
-
-```
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-```
-
-Replace values with your actual configuration.
-
----
-
-## Running the Application
-
-### Start Backend
-
-From the root directory:
-
-```bash
-npm run start
-```
-
-or
-
-```bash
-node src/server.js
-```
-
----
-
-### Start Frontend
-
-In a separate terminal:
-
-```bash
-cd public
-npm run dev
-```
-
-Frontend will typically run at:
-
-```
-http://localhost:5173
-```
-
-Backend typically runs at:
-
-```
-http://localhost:5000
-```
-
----
-
-## API Overview
-
-Example routes:
-
-- POST /api/auth/register
-- POST /api/auth/login
-- GET /api/products
-- POST /api/orders
-
-Routes may vary depending on your implementation.
-
----
-
-## Future Improvements
-
-- Payment gateway integration (Stripe / Razorpay)
-- Admin dashboard for product management
-- Product filtering and search
-- Wishlist feature
-- Secure password hashing improvements
-- Deployment setup (Docker + Cloud hosting)
-- CI/CD pipeline
-
----
-
-## Deployment Notes
-
-Before deploying to production:
-
-- Add input validation and sanitization
-- Add proper error handling middleware
-- Enable CORS configuration properly
-- Move secrets to secure environment variables
-- Optimize frontend build using `npm run build`
-- Use a production MongoDB cluster
-
----
-
-## License
-
-This project currently does not include a license file.  
-If you intend to make it open source, consider adding an MIT License.
-
----
-
-## Author
-
-Kartik Dayatar
-
-GitHub: https://github.com/kartik-dayatar
+This project is licensed under the MIT License - see the LICENSE file for details.
