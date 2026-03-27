@@ -3,14 +3,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 import './Header.css';
 
-function Header() {
+/**
+ * Header component
+ *
+ * variant="pre-login"  → public pages (home, shop, product detail, new-arrivals, contact)
+ *                        Shows: Sign In + Sign Up buttons
+ *
+ * variant="post-login" → pages that require the user to be logged in
+ *                        Shows: username pill instead of auth buttons
+ *
+ * When no variant is passed it defaults to "pre-login".
+ */
+function Header({ variant = 'pre-login' }) {
     const navigate = useNavigate();
     const cartCount = useCartStore((state) => state.getCount());
-    // Placeholder login state - set to false to show Sign In/Up buttons as per JSP logic, 
-    // or true to show Account. Let's default to false or checking local storage if we had it.
-    // For now, hardcoded false to match the "guest" view which is common.
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const isPostLogin = variant === 'post-login';
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -23,17 +32,7 @@ function Header() {
                 {/* LEFT: Logo */}
                 <div className="logo-container">
                     <Link to="/home" className="logo-link">
-                        {/* Assuming assets/Logo.png exists, otherwise fallback to text or existing icon */}
-                        {/* The user JSP used assumptions about assets. We'll try to use the image if it exists, 
-                            or use the text logo from before if the image is missing. 
-                            The previous header had a text logo. Let's use the text/icon combo but styled like the request?
-                            The request specifically asks for <img src="<%=cp%>/assets/Logo.png" ...> 
-                            I will check if that file exists. If not, I'll use the text/icon from the old header but wrapped in their structure.
-                        */}
-                        {/* For now, I'll use the text implementation to be safe, but wrapped in their classes */}
                         <span style={{ fontSize: '1.5rem', marginRight: '5px' }}>⚡</span>
-                        {/* If they really want the image, they should provide it. I'll stick to the previous logo text but use their classes */}
-                        {/* <img src="/assets/Logo.png" alt="OtakuNation" className="logo-img" /> */}
                     </Link>
                     <span className="brand-tagline">Premium Anime Merchandise</span>
                 </div>
@@ -58,20 +57,28 @@ function Header() {
                     <Link to="/home">Home</Link>
                     <Link to="/products">Shop</Link>
                     <Link to="/new-arrivals">New Arrivals</Link>
-
                     <Link to="/contact">Contact</Link>
                 </nav>
 
                 {/* RIGHT: Actions */}
                 <div className="header-actions">
-                    {!isLoggedIn ? (
-                        <>
-                            <Link to="/login" className="btn ghost">Sign in</Link>
-                            <Link to="/register" className="btn primary">Sign up</Link>
-                        </>
-                    ) : (
-                        <Link to="/account" className="btn ghost">👤 Account</Link>
-                    )}
+                    <div className="auth-container">
+                        {isPostLogin ? (
+                            /* ── POST-LOGIN NAVBAR: show username ── */
+                            <Link to="/account" className="user-pill">
+                                <span className="user-avatar">
+                                    O
+                                </span>
+                                <span className="user-name" style={{ marginLeft: "4px" }}>Otaku</span>
+                            </Link>
+                        ) : (
+                            /* ── PRE-LOGIN NAVBAR: show Sign In / Sign Up ── */
+                            <div className="pre-login-buttons">
+                                <Link to="/login" className="btn ghost">Sign in</Link>
+                                <Link to="/register" className="btn primary">Sign up</Link>
+                            </div>
+                        )}
+                    </div>
 
                     <Link to="/wishlist" className="btn ghost icon-btn" aria-label="Wishlist">
                         ❤️
@@ -80,9 +87,7 @@ function Header() {
                     <Link to="/cart" className="btn ghost icon-btn" aria-label="Cart">
                         🛒
                         {cartCount > 0 && (
-                            <span className="badge">
-                                {cartCount}
-                            </span>
+                            <span className="badge">{cartCount}</span>
                         )}
                     </Link>
                 </div>

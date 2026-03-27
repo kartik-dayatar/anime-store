@@ -67,7 +67,7 @@ export default function NewArrivals() {
                     </div>
                     <div className="na-featured-grid">
                         <Link to="/product/100" className="na-featured-card">
-                            <div className="na-featured-img" style={{ background: 'linear-gradient(135deg,#7c3aed 0%,#2563eb 50%,#06b6d4 100%)' }}>
+                            <div className="na-featured-img" style={{ background: 'url(/src/assets/images/products/gojo-figure.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span>
                                 <span className="na-scarcity">Only 8 left</span>
                             </div>
@@ -83,7 +83,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/101" className="na-side-card">
-                            <div className="na-side-img" style={{ background: 'linear-gradient(135deg,#ef4444,#f97316)' }}>
+                            <div className="na-side-img" style={{ background: 'url(/src/assets/images/products/hashira-statchu.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Only 12 left</span>
                             </div>
                             <div className="na-side-info">
@@ -92,7 +92,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/102" className="na-side-card">
-                            <div className="na-side-img" style={{ background: 'linear-gradient(135deg,#ec4899,#8b5cf6)' }}>
+                            <div className="na-side-img" style={{ background: 'url(/src/assets/images/products/anya-plush.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Exclusive</span>
                             </div>
                             <div className="na-side-info">
@@ -115,7 +115,7 @@ export default function NewArrivals() {
                     </div>
                     <div className="na-grid">
                         <Link to="/product/103" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#fecaca,#fca5a5)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/tanjiro-earings.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Only 15 left</span>
                             </div>
                             <div className="na-card-body">
@@ -125,7 +125,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/104" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#ddd6fe,#c4b5fd)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/sukuna-fingure-replica.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Limited Edition</span>
                             </div>
                             <div className="na-card-body">
@@ -135,7 +135,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/105" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#fed7aa,#fdba74)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/luffy-G5-tee.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Exclusive Drop</span>
                             </div>
                             <div className="na-card-body">
@@ -145,7 +145,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/106" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#bbf7d0,#86efac)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/deku.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Only 20 left</span>
                             </div>
                             <div className="na-card-body">
@@ -155,7 +155,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/107" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#bfdbfe,#93c5fd)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/AOT-jackate.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Limited Edition</span>
                             </div>
                             <div className="na-card-body">
@@ -165,7 +165,7 @@ export default function NewArrivals() {
                             </div>
                         </Link>
                         <Link to="/product/108" className="na-card">
-                            <div className="na-card-img" style={{ background: 'linear-gradient(135deg,#fef3c7,#fde68a)' }}>
+                            <div className="na-card-img" style={{ background: 'url(/src/assets/images/products/vagita-figure.jpg) center/cover no-repeat' }}>
                                 <span className="na-badge-glow">NEW</span><span className="na-scarcity">Only 6 left</span>
                             </div>
                             <div className="na-card-body">

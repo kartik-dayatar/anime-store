@@ -5,10 +5,14 @@ import './Register.css'; // Specific overrides
 
 export default function Register() {
     const navigate = useNavigate();
+    
+    // Controlled inputs to capture name and email
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
 
     const handleRegister = (e) => {
         e.preventDefault();
-        navigate('/account');
+        navigate('/');
     };
 
     return (
@@ -21,12 +25,26 @@ export default function Register() {
                     <form className="login-form" onSubmit={handleRegister}>
                         <label className="login-field">
                             <span className="login-label">Full Name</span>
-                            <input type="text" name="fullName" placeholder="Your name" className="form-input" />
+                            <input 
+                                type="text" 
+                                name="fullName" 
+                                placeholder="Your name" 
+                                className="form-input" 
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                            />
                         </label>
 
                         <label className="login-field">
                             <span className="login-label">Email</span>
-                            <input type="email" name="email" placeholder="you@otakunation.com" className="form-input" />
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="you@otakunation.com" 
+                                className="form-input" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </label>
 
                         <label className="login-field">

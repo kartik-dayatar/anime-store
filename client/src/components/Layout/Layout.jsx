@@ -1,33 +1,26 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import CartDrawer from '../CartDrawer/CartDrawer';
-import { routeTransition } from '../../utils/motionVariants';
+
 import './Layout.css';
 
-
-
+/**
+ * Layout – used for PUBLIC pages (home, shop, new-arrivals, contact, etc.)
+ * Header variant="pre-login" → shows Sign In + Sign Up buttons.
+ */
 function Layout() {
-    const location = useLocation();
-
     return (
         <div className="layout-wrapper">
-            {/* Main Content - No Sidebar anymore */}
             <div className="main-content">
-                <Header />
+                <Header variant="pre-login" />
 
                 <main className="page-transition-wrapper">
-                    <main className="page-transition-wrapper">
-                        <Outlet />
-                    </main>
-
+                    <Outlet />
                 </main>
 
                 <Footer />
             </div>
 
-            <CartDrawer />
         </div>
     );
 }

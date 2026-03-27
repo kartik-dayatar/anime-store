@@ -9,9 +9,7 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Verify login logic here
-        console.log("Logging in with", email, password);
-        navigate('/home');
+        navigate('/');
     };
 
     return (

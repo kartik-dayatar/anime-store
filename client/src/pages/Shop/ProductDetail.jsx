@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 import useProductStore from '../../store/productStore';
 import './ProductDetail.css';
 
 export default function ProductDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const product = useProductStore((state) => state.getProductById(id));
     const products = useProductStore((state) => state.products);
     const addItem = useCartStore((s) => s.addItem);
@@ -25,7 +26,7 @@ export default function ProductDetail() {
         for (let i = 0; i < quantity; i++) {
             addItem(product, product.sizes ? product.sizes[selectedSize] : 'M');
         }
-        // Simple alert or toast could go here
+        navigate('/cart');
     };
 
     return (
@@ -85,6 +86,7 @@ export default function ProductDetail() {
                             <div className="size-options">
                                 {product.sizes.map((size, i) => (
                                     <button
+                                        type="button"
                                         key={size}
                                         className={`size-btn ${selectedSize === i ? 'active' : ''}`}
                                         onClick={() => setSelectedSize(i)}

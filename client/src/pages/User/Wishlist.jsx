@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 import useProductStore from '../../store/productStore';
 import './Wishlist.css';
@@ -8,6 +8,7 @@ export default function Wishlist() {
     // Mock wishlist data - using real products
     const products = useProductStore((state) => state.products);
     const [wishlist, setWishlist] = useState(products.slice(0, 6));
+    const navigate = useNavigate();
 
     const addItem = useCartStore((state) => state.addItem);
 
@@ -17,7 +18,7 @@ export default function Wishlist() {
 
     const handleAddToCart = (item) => {
         addItem(item, item.sizes ? item.sizes[0] : 'M'); // Default to M or first size
-        // Optionally remove from wishlist? Let's keep it for now.
+        navigate('/cart');
     };
 
     return (
@@ -34,14 +35,7 @@ export default function Wishlist() {
                             {wishlist.map(item => (
                                 <article className="wishlist-card" key={item.id}>
                                     <div className="wishlist-image-slot">
-                                        <div
-                                            className="wishlist-gradient"
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                background: `linear-gradient(135deg, ${['#0f172a', '#1e3a5f', '#3b1d6e', '#0c1220', '#ef4444', '#8b5cf6'][item.id % 6]} 0%, ${['#2563eb', '#7c3aed', '#334155', '#b91c1c', '#6d28d9', '#dc2626'][item.id % 6]} 100%)`
-                                            }}
-                                        />
+                                        <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px 12px 0 0' }} />
                                     </div>
                                     <div className="wishlist-content">
                                         <Link to={`/product/${item.id}`} className="wishlist-title-link">

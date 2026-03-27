@@ -231,7 +231,7 @@
 }
 
 .na-featured-img {
-    height: 340px;
+    height: 260px;
     position: relative;
 }
 
@@ -322,7 +322,7 @@
 }
 
 .na-side-img {
-    height: 160px;
+    height: 130px;
     position: relative;
 }
 
@@ -403,8 +403,8 @@
 
 .na-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
 }
 
 .na-card {
@@ -423,7 +423,7 @@
 }
 
 .na-card-img {
-    height: 200px;
+    height: 170px;
     position: relative;
 }
 

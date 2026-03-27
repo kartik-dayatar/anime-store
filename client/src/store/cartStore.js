@@ -2,11 +2,6 @@ import { create } from 'zustand';
 
 const useCartStore = create((set, get) => ({
     items: [],
-    isOpen: false,
-
-    toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
-    openCart: () => set({ isOpen: true }),
-    closeCart: () => set({ isOpen: false }),
 
     addItem: (product, selectedSize) => {
         const items = get().items;
@@ -20,12 +15,9 @@ const useCartStore = create((set, get) => ({
                 ...updated[existingIndex],
                 quantity: updated[existingIndex].quantity + 1,
             };
-            set({ items: updated, isOpen: true });
+            set({ items: updated });
         } else {
-            set({
-                items: [...items, { ...product, selectedSize, quantity: 1 }],
-                isOpen: true,
-            });
+            set({ items: [...items, { ...product, selectedSize, quantity: 1 }] });
         }
     },
 

@@ -21,13 +21,13 @@
 
 .container {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 24px;
 }
 
 .section {
-    padding: 64px 0;
+    padding: 48px 0;
 }
 
 .section-alt {
@@ -39,26 +39,25 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 48px;
-    /* Increased margin */
+    gap: 12px;
+    margin-bottom: 32px;
 }
 
 .section-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: var(--text-main, #0f172a);
     line-height: 1.2;
 }
 
 .section-header p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-muted, #64748b);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .section-link {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--primary, #2563eb);
     white-space: nowrap;
@@ -75,11 +74,10 @@
 /* ----- BUTTONS ----- */
 .btn {
     display: inline-block;
-    padding: 14px 32px;
-    /* Larger buttons */
-    border-radius: 12px;
+    padding: 10px 24px;
+    border-radius: 8px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 1px solid transparent;
@@ -112,8 +110,8 @@
 }
 
 .btn-lg {
-    padding: 18px 40px;
-    font-size: 1.15rem;
+    padding: 12px 28px;
+    font-size: 1rem;
 }
 
 
@@ -123,7 +121,7 @@
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 600px;
+    height: 480px;
     overflow: hidden;
     background: var(--secondary, #0f172a);
     z-index: 1;
@@ -152,10 +150,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 80px;
+    gap: 40px;
     height: 100%;
-    padding-top: 60px;
-    /* Slight offset for header */
+    padding-top: 40px;
 }
 
 .slide-content {
@@ -172,16 +169,16 @@
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
     color: #fff;
-    padding: 8px 20px;
+    padding: 6px 16px;
     border-radius: 999px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
     border: 1px solid rgba(255, 255, 255, 0.2);
     letter-spacing: 0.5px;
 }
 
 .slide-title {
-    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-size: clamp(2rem, 3.5vw, 3rem);
     font-weight: 800;
     color: #fff;
     line-height: 1.1;
@@ -189,10 +186,10 @@
 }
 
 .slide-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
-    max-width: 500px;
+    line-height: 1.5;
+    max-width: 450px;
 }
 
 .slide-actions {
@@ -205,7 +202,7 @@
 /* Floating visuals in hero */
 .slide-visual {
     position: relative;
-    height: 400px;
+    height: 320px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -225,15 +222,15 @@
 .hero-float-card span {
     display: block;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 .float-img {
-    border-radius: 12px;
-    width: 180px;
-    height: 260px;
+    border-radius: 8px;
+    width: 130px;
+    height: 180px;
     object-fit: cover;
     display: block;
     margin-bottom: 8px;
@@ -278,14 +275,14 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(4px);
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     z-index: 10;
     display: flex;
@@ -300,11 +297,11 @@
 }
 
 .carousel-prev {
-    left: 40px;
+    left: 20px;
 }
 
 .carousel-next {
-    right: 40px;
+    right: 20px;
 }
 
 .carousel-dots {
@@ -318,8 +315,8 @@
 }
 
 .dot {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.5);
     background: transparent;
@@ -331,9 +328,9 @@
 .dot.active {
     background: #fff;
     border-color: #fff;
-    width: 40px;
+    width: 32px;
     /* Pill shape for active */
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 
@@ -349,17 +346,16 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    gap: 20px;
-    padding: 40px 0;
-    /* More padding */
+    gap: 16px;
+    padding: 24px 0;
 }
 
 .stat-item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px 24px;
-    border-radius: 16px;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
     transition: all 0.25s ease;
 }
 
@@ -370,20 +366,20 @@
 }
 
 .stat-icon {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
 }
 
 .stat-item strong {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--text-main, #0f172a);
     display: block;
 }
 
 .stat-item p {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-muted, #64748b);
-    margin: 4px 0 0;
+    margin: 2px 0 0;
 }
 
 
@@ -392,18 +388,16 @@
    ============================================= */
 .anime-scroll-wrapper {
     position: relative;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .anime-scroll-track {
     display: flex;
-    gap: 32px;
-    /* More gap */
+    gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    padding: 20px 10px 40px;
-    /* More padding */
+    padding: 10px 10px 24px;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -413,28 +407,28 @@
 }
 
 .anime-card {
-    flex: 0 0 220px;
+    flex: 0 0 160px;
     scroll-snap-align: start;
     background: var(--bg-surface, #fff);
     border: 1px solid var(--border, #e2e8f0);
-    border-radius: 20px;
-    padding: 12px;
+    border-radius: 16px;
+    padding: 10px;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .anime-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
     border-color: var(--primary, #2563eb);
 }
 
 .anime-card-img {
     width: 100%;
-    height: 220px;
-    border-radius: 16px;
-    margin-bottom: 12px;
+    height: 160px;
+    border-radius: 12px;
+    margin-bottom: 10px;
     overflow: hidden;
 }
 
@@ -446,14 +440,14 @@
 }
 
 .anime-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-main, #0f172a);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .anime-card-count {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted, #64748b);
 }
 
@@ -461,8 +455,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border, #e2e8f0);
     background: var(--bg-surface, #fff);
@@ -484,11 +478,11 @@
 }
 
 .scroll-left {
-    left: -28px;
+    left: -20px;
 }
 
 .scroll-right {
-    right: -28px;
+    right: -20px;
 }
 
 
@@ -498,13 +492,13 @@
 .trending-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: 16px;
 }
 
 .trending-card {
     background: var(--bg-surface, #fff);
     border: 1px solid var(--border, #e2e8f0);
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -513,12 +507,12 @@
 }
 
 .trending-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
 }
 
 .trending-img {
-    height: 280px;
+    height: 220px;
     position: relative;
     overflow: hidden;
 }
@@ -532,34 +526,34 @@
 
 .trending-badge {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 12px;
+    left: 12px;
     background: var(--primary, #2563eb);
     color: #fff;
-    padding: 6px 14px;
+    padding: 4px 10px;
     border-radius: 999px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .trending-info {
-    padding: 24px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     flex: 1;
 }
 
 .trending-info h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1.4;
 }
 
 .trending-anime {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted, #64748b);
 }
 
@@ -568,17 +562,17 @@
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 16px;
+    padding-top: 12px;
 }
 
 .trending-price {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--primary, #2563eb);
 }
 
 .trending-rating {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-main, #0f172a);
     font-weight: 600;
     display: flex;
@@ -590,46 +584,46 @@
    FRESH DROPS
    ============================================= */
 .fresh-drops-section {
-    padding: 100px 0;
+    padding: 64px 0;
 }
 
 .fresh-drops-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
 }
 
 .fresh-drops-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 800;
 }
 
 .fresh-drops-sub {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-muted, #64748b);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .fresh-drops-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 20px;
 }
 
 .fd-card {
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .fd-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
 }
 
 .fd-card-img {
-    height: 400px;
+    height: 300px;
     position: relative;
     overflow: hidden;
 }
@@ -643,28 +637,28 @@
 
 .fd-badge {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 12px;
+    left: 12px;
     background: #000;
     color: #fff;
-    padding: 6px 14px;
-    font-size: 0.8rem;
+    padding: 4px 10px;
+    font-size: 0.75rem;
     font-weight: 700;
     border-radius: 99px;
 }
 
 .fd-card-body {
-    padding: 20px 0;
+    padding: 16px 0;
 }
 
 .fd-card-body h3 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .fd-price {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     color: var(--text-muted, #64748b);
 }
 
@@ -675,40 +669,40 @@
 .why-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: 16px;
 }
 
 .why-card {
     background: var(--bg-surface, #fff);
     border: 1px solid var(--border, #e2e8f0);
-    border-radius: 20px;
-    padding: 32px 24px;
+    border-radius: 16px;
+    padding: 24px 20px;
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .why-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
     border-color: var(--primary, #2563eb);
 }
 
 .why-icon {
-    font-size: 3rem;
-    margin-bottom: 24px;
+    font-size: 2.2rem;
+    margin-bottom: 16px;
     line-height: 1;
 }
 
 .why-card h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .why-card p {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--text-muted, #64748b);
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 
