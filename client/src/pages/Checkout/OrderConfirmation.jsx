@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaCheck, FaTrophy, FaBox, FaEnvelope } from 'react-icons/fa';
 import './Checkout.css'; // Reusing Checkout styles for steps
 import './OrderConfirmation.css'; // Specific styles
 
@@ -9,19 +10,19 @@ export default function OrderConfirmation() {
             {/* Progress Steps: Cart -> Address -> Payment -> Confirmation */}
             <div className="checkout-steps">
                 <div className="step completed">
-                    <div className="step-circle">✓</div>
+                    <div className="step-circle"><FaCheck size={12} /></div>
                     <div className="step-label">Cart</div>
                 </div>
                 <div className="step completed">
-                    <div className="step-circle">✓</div>
+                    <div className="step-circle"><FaCheck size={12} /></div>
                     <div className="step-label">Address</div>
                 </div>
                 <div className="step completed">
-                    <div className="step-circle">✓</div>
+                    <div className="step-circle"><FaCheck size={12} /></div>
                     <div className="step-label">Payment</div>
                 </div>
                 <div className="step completed">
-                    <div className="step-circle">✓</div>
+                    <div className="step-circle"><FaCheck size={12} /></div>
                     <div className="step-label">Confirm</div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { FaGlobeAmericas, FaEnvelope, FaTag, FaBox, FaTruck, FaShippingFast, FaCheckCircle, FaArrowLeft, FaBolt, FaShip, FaPalette, FaKey } from 'react-icons/fa';
+import { GiSpiralShell } from 'react-icons/gi';
 import './OrderTracking.css';
 
 export default function OrderTracking() {
@@ -8,7 +10,7 @@ export default function OrderTracking() {
     const orderIdParam = searchParams.get('orderId');
     const [orderData, setOrderData] = useState(null);
 
-    // Mock DB based on JSP
+    // Mock DB updated with Icon Components or names
     const mockOrders = {
         "ORD-2024-889": {
             orderDate: "Oct 12, 2024",
@@ -19,9 +21,9 @@ export default function OrderTracking() {
             trackingId: "TRK889220456",
             estimatedDelivery: "Delivered on Oct 18, 2024",
             items: [
-                { name: "Demon Slayer Haori", desc: "Size: M · Qty: 1", price: "₹3,735", emoji: "⚡" },
-                { name: "Naruto Headband - Hidden Leaf", desc: "Qty: 1", price: "₹1,577", emoji: "🍥" },
-                { name: "Mystery Anime Sticker Pack", desc: "Qty: 2", price: "₹1,328", emoji: "📦" }
+                { name: "Demon Slayer Haori", desc: "Size: M · Qty: 1", price: "₹3,735", icon: <FaBolt color="#ffc107" /> },
+                { name: "Naruto Headband - Hidden Leaf", desc: "Qty: 1", price: "₹1,577", icon: <GiSpiralShell color="#ff4500" /> },
+                { name: "Mystery Anime Sticker Pack", desc: "Qty: 2", price: "₹1,328", icon: <FaBox color="#8b4513" /> }
             ]
         },
         "ORD-2024-762": {
@@ -33,7 +35,7 @@ export default function OrderTracking() {
             trackingId: "TRK762887321",
             estimatedDelivery: "3-5 Business Days",
             items: [
-                { name: "Attack on Titan Keychain Set", desc: "Qty: 1", price: "₹996", emoji: "🔑" }
+                { name: "Attack on Titan Keychain Set", desc: "Qty: 1", price: "₹996", icon: <FaKey color="#64748b" /> }
             ]
         },
         "ORD-2024-554": {
@@ -45,9 +47,9 @@ export default function OrderTracking() {
             trackingId: "Awaiting shipment",
             estimatedDelivery: "5-7 Business Days (estimated)",
             items: [
-                { name: "One Piece Going Merry Model Kit", desc: "1:100 Scale · Qty: 1", price: "₹6,557", emoji: "⛵" },
-                { name: "Jujutsu Kaisen T-Shirt", desc: "Size: L · Qty: 1", price: "₹2,698", emoji: "👕" },
-                { name: "My Hero Academia Poster Set", desc: "A3 Size · Qty: 2", price: "₹2,822", emoji: "🎨" }
+                { name: "One Piece Going Merry Model Kit", desc: "1:100 Scale · Qty: 1", price: "₹6,557", icon: <FaShip color="#3b82f6" /> },
+                { name: "Jujutsu Kaisen T-Shirt", desc: "Size: L · Qty: 1", price: "₹2,698", icon: <FaTag color="#ef4444" /> },
+                { name: "My Hero Academia Poster Set", desc: "A3 Size · Qty: 2", price: "₹2,822", icon: <FaPalette color="#8b5cf6" /> }
             ]
         }
     };
@@ -55,13 +57,6 @@ export default function OrderTracking() {
     useEffect(() => {
         if (orderIdParam && mockOrders[orderIdParam]) {
             setOrderData(mockOrders[orderIdParam]);
-        } else {
-            // Default demo or not found
-            // If no param, maybe show a "Not Found" state or redirect logic like JSP?
-            // JSP redirects to form if no ID.
-            if (!orderIdParam) {
-                // In React we might just show the search UI here later or null
-            }
         }
     }, [orderIdParam]);
 
@@ -71,7 +66,7 @@ export default function OrderTracking() {
                 <div className="track-card">
                     <div className="track-header">
                         <h1 className="track-title">
-                            <span className="track-icon">🌍</span>
+                            <span className="track-icon"><FaGlobeAmericas /></span>
                             Track Your Order
                         </h1>
                         <p className="track-subtitle">Enter your order details to check delivery status.</p>
@@ -84,14 +79,14 @@ export default function OrderTracking() {
                     }}>
                         <div className="track-form-group">
                             <div className="track-input-wrapper">
-                                <span className="track-input-icon">✉️</span>
+                                <span className="track-input-icon"><FaEnvelope /></span>
                                 <input type="email" name="email" className="track-input" placeholder="Email Address" required />
                             </div>
                         </div>
 
                         <div className="track-form-group">
                             <div className="track-input-wrapper">
-                                <span className="track-input-icon">🏷️</span>
+                                <span className="track-input-icon"><FaTag /></span>
                                 <input type="text" name="orderId" className="track-input" placeholder="Order ID (e.g. ORD-2024-889)" required />
                             </div>
                         </div>
@@ -128,7 +123,7 @@ export default function OrderTracking() {
     else if (orderStatus === 'delivered') stepIndex = 3;
 
     const stepLabels = ["Placed", "Shipped", "Out for Delivery", "Delivered"];
-    const stepIcons = ["📦", "🚚", "🚲", "✅"];
+    const stepIcons = [<FaBox />, <FaTruck />, <FaShippingFast />, <FaCheckCircle />];
 
     let fillWidth = "0%";
     if (stepIndex === 0) fillWidth = "0%";
@@ -138,7 +133,7 @@ export default function OrderTracking() {
 
     return (
         <main className="ot-container">
-            <Link to="/orders" className="ot-back">&#8592; Back to Orders</Link>
+            <Link to="/orders" className="ot-back"><FaArrowLeft style={{ marginRight: '8px' }} /> Back to Orders</Link>
 
             <h1 className="ot-page-title">Order #{orderIdParam}</h1>
             <p className="ot-page-sub">
@@ -148,26 +143,17 @@ export default function OrderTracking() {
             {/* Progress Tracker */}
             <div className="ot-progress">
                 <div className="ot-progress-fill" style={{ width: fillWidth }}></div>
-                {stepLabels.map((label, i) => {
-                    let cls = "";
-                    if (i < stepIndex) cls = "done";
-                    if (i === stepIndex) cls = "active";
-                    if (cls === "" && i <= stepIndex) cls = "active"; // Simplified active logic
-                    // Actually, JSP logic for fill is visual, JS for class:
-                    // Only mark active or done if i <= stepIndex?
-                    // Let's stick to standard progress bar logic
-                    return (
-                        <div key={i} className={`ot-step ${i <= stepIndex ? 'active' : ''}`}>
-                            <div className="ot-step-icon">{stepIcons[i]}</div>
-                            <div className="ot-step-label">{label}</div>
-                        </div>
-                    );
-                })}
+                {stepLabels.map((label, i) => (
+                    <div key={i} className={`ot-step ${i <= stepIndex ? 'active' : ''}`}>
+                        <div className="ot-step-icon">{stepIcons[i]}</div>
+                        <div className="ot-step-label">{label}</div>
+                    </div>
+                ))}
             </div>
 
             {/* Tracking Info */}
             <div className="ot-tracking">
-                <div className="ot-tracking-icon">🚚</div>
+                <div className="ot-tracking-icon"><FaTruck /></div>
                 <div className="ot-tracking-info">
                     <strong>Tracking ID: {trackingId}</strong>
                     <span>Estimated Delivery: {estimatedDelivery}</span>
@@ -206,7 +192,7 @@ export default function OrderTracking() {
                 <h3 className="ot-card-title">Items Ordered</h3>
                 {items.map((item, j) => (
                     <div key={j} className="ot-item">
-                        <div className="ot-item-img">{item.emoji}</div>
+                        <div className="ot-item-img">{item.icon}</div>
                         <div className="ot-item-info">
                             <h4>{item.name}</h4>
                             <p>{item.desc}</p>
@@ -223,3 +209,4 @@ export default function OrderTracking() {
         </main>
     );
 }
+

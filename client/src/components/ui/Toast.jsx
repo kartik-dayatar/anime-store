@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X, Info } from 'lucide-react';
 import { toastVariant } from '../../utils/motionVariants';
 import './Toast.css';
 
@@ -45,9 +46,9 @@ export function ToastProvider({ children }) {
                             onClick={() => removeToast(toast.id)}
                         >
                             <span className="toast-icon">
-                                {toast.type === 'success' && '✓'}
-                                {toast.type === 'error' && '✕'}
-                                {toast.type === 'info' && 'ℹ'}
+                                {toast.type === 'success' && <Check size={18} />}
+                                {toast.type === 'error' && <X size={18} />}
+                                {toast.type === 'info' && <Info size={18} />}
                             </span>
                             <span className="toast-message">{toast.message}</span>
                         </motion.div>

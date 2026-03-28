@@ -28,7 +28,7 @@ export const heroSlides = [
     },
     {
         bg: 'linear-gradient(135deg,#0c1220 0%,#1e293b 50%,#334155 100%)',
-        badge: 'Summer Sale 🔥',
+        badge: 'Summer Sale',
         title: 'Up to 40% Off Everything',
         subtitle: 'Biggest anime merch sale of the year. Grab your favorites before they\'re gone!',
         primaryBtn: { text: 'Shop Sale', link: '/products' },
@@ -42,11 +42,11 @@ export const heroSlides = [
 ];
 
 export const statsData = [
-    { icon: '📦', strong: '3,000+', text: 'Products' },
-    { icon: '🎬', strong: '300+', text: 'Anime Series' },
-    { icon: '🙂', strong: '10k+', text: 'Happy Customers' },
-    { icon: '🔒', strong: '100%', text: 'Secure Checkout' },
-    { icon: '✅', strong: 'Authentic', text: 'Licensed Merch' }
+    { icon: 'package', strong: '3,000+', text: 'Products' },
+    { icon: 'film', strong: '300+', text: 'Anime Series' },
+    { icon: 'happy', strong: '10k+', text: 'Happy Customers' },
+    { icon: 'lock', strong: '100%', text: 'Secure Checkout' },
+    { icon: 'check', strong: 'Authentic', text: 'Licensed Merch' }
 ];
 
 // ── Shop by Anime (thumbnail images) ──
@@ -82,10 +82,10 @@ export const freshDrops = [
 ];
 
 export const whyUsData = [
-    { icon: '⚡', title: 'Premium Quality', text: 'Every item is sourced from authorized manufacturers. No bootlegs, ever.' },
-    { icon: '🚚', title: 'Fast Delivery', text: 'Express shipping worldwide. Most orders ship within 24 hours of purchase.' },
-    { icon: '🛡️', title: 'Secure Payments', text: '256-bit SSL encryption. We support cards, UPI, wallets, and crypto.' },
-    { icon: '🏆', title: 'Authentic Licensed', text: 'Officially licensed merchandise from Bandai, Good Smile, Funko & more.' }
+    { icon: 'quality', title: 'Premium Quality', text: 'Every item is sourced from authorized manufacturers. No bootlegs, ever.' },
+    { icon: 'truck', title: 'Fast Delivery', text: 'Express shipping worldwide. Most orders ship within 24 hours of purchase.' },
+    { icon: 'shield', title: 'Secure Payments', text: '256-bit SSL encryption. We support cards, UPI, wallets, and crypto.' },
+    { icon: 'crown', title: 'Authentic Licensed', text: 'Officially licensed merchandise from Bandai, Good Smile, Funko & more.' }
 ];
 
 export const reviewsData = [

@@ -1,3 +1,4 @@
+import { FaGlobe, FaEnvelope, FaPhone, FaClock } from 'react-icons/fa';
 import narutoFloat from '../../assets/images/hero/naruto_float.png';
 import './Contact.css';
 
@@ -41,19 +42,19 @@ export default function Contact() {
                             <h2>Get In Touch</h2>
                             <ul>
                                 <li>
-                                    <span className="contact-icon">🌐</span>
+                                    <span className="contact-icon"><FaGlobe /></span>
                                     <span><strong>Website:</strong> <a href="#" className="contact-link">www.otakunation.com</a></span>
                                 </li>
                                 <li>
-                                    <span className="contact-icon">✉️</span>
+                                    <span className="contact-icon"><FaEnvelope /></span>
                                     <span><strong>Email:</strong> <a href="mailto:support@otakunation.com" className="contact-link">support@otakunation.com</a></span>
                                 </li>
                                 <li>
-                                    <span className="contact-icon">📞</span>
+                                    <span className="contact-icon"><FaPhone /></span>
                                     <span><strong>Phone:</strong> +1 800 123 4567</span>
                                 </li>
                                 <li>
-                                    <span className="contact-icon">⏰</span>
+                                    <span className="contact-icon"><FaClock /></span>
                                     <span><strong>Hours:</strong> Mon–Fri: 9am – 6pm</span>
                                 </li>
                             </ul>

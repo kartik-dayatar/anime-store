@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Zap } from 'lucide-react';
 import './ProductCard.css';
 
 const gradients = [
@@ -30,7 +30,7 @@ const ProductCard = ({ product }) => {
                     <img src={product.image} alt={product.name} className="product-card-img" loading="lazy" />
                 ) : (
                     <div className="product-placeholder">
-                        <span className="placeholder-icon">⚡</span>
+                        <span className="placeholder-icon"><Zap size={24} /></span>
                     </div>
                 )} 
 

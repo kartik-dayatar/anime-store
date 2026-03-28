@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaThLarge, FaBox, FaUser, FaMapMarkerAlt, FaSignOutAlt, FaChevronRight, FaBolt, FaShip, FaKey } from 'react-icons/fa';
 import './Account.css';
 
 export default function Account() {
@@ -61,17 +62,17 @@ export default function Account() {
                 <div className="dashboard-card">
                     <h3>Total Orders</h3>
                     <div className="dashboard-value">12</div>
-                    <Link to="#" onClick={() => setActiveSection('orders')} className="dashboard-link">View all orders &rarr;</Link>
+                    <Link to="#" onClick={() => setActiveSection('orders')} className="dashboard-link">View all orders <FaChevronRight size={10} /></Link>
                 </div>
                 <div className="dashboard-card">
                     <h3>Wishlist Items</h3>
                     <div className="dashboard-value">4</div>
-                    <Link to="/wishlist" className="dashboard-link">Go to Wishlist &rarr;</Link>
+                    <Link to="/wishlist" className="dashboard-link">Go to Wishlist <FaChevronRight size={10} /></Link>
                 </div>
                 <div className="dashboard-card">
                     <h3>Otaku Points</h3>
                     <div className="dashboard-value">850</div>
-                    <Link to="#" className="dashboard-link">Redeem &rarr;</Link>
+                    <Link to="#" className="dashboard-link">Redeem <FaChevronRight size={10} /></Link>
                 </div>
             </div>
             <div className="recent-orders">
@@ -264,7 +265,7 @@ export default function Account() {
             status: "delivered",
             total: "₹6,640",
             items: ["Demon Slayer Haori", "Naruto Headband"],
-            image: "⚡"
+            icon: <FaBolt color="#ffc107" />
         },
         {
             id: "ORD-2024-762",
@@ -272,7 +273,7 @@ export default function Account() {
             status: "shipped",
             total: "₹996",
             items: ["Attack on Titan Keychain Set"],
-            image: "🗝️"
+            icon: <FaKey color="#64748b" />
         },
         {
             id: "ORD-2024-554",
@@ -280,7 +281,7 @@ export default function Account() {
             status: "processing",
             total: "₹12,076",
             items: ["One Piece Going Merry Model Kit", "Jujutsu Kaisen T-Shirt"],
-            image: "⛵"
+            icon: <FaShip color="#3b82f6" />
         }
     ];
 
@@ -313,7 +314,7 @@ export default function Account() {
                                 justifyContent: 'center',
                                 fontSize: '24px'
                             }}>
-                                {order.image}
+                                {order.icon}
                             </div>
                             <div>
                                 <h4 style={{ margin: '0 0 4px', color: 'var(--color-text)' }}>{order.items[0]} {order.items.length > 1 && `+ ${order.items.length - 1} more`}</h4>
@@ -391,7 +392,7 @@ export default function Account() {
                                 className={`sidebar-btn ${activeSection === 'overview' ? 'active' : ''}`}
                                 onClick={() => setActiveSection('overview')}
                             >
-                                Overview
+                                <FaThLarge style={{ marginRight: '10px' }} /> Overview
                             </button>
                         </li>
 
@@ -401,7 +402,7 @@ export default function Account() {
                                 className={`sidebar-btn ${activeSection === 'orders' ? 'active' : ''}`}
                                 onClick={() => setActiveSection('orders')}
                             >
-                                Orders & Returns
+                                <FaBox style={{ marginRight: '10px' }} /> Orders & Returns
                             </button>
                         </li>
 
@@ -411,17 +412,17 @@ export default function Account() {
                                 className={`sidebar-btn ${activeSection === 'profile' ? 'active' : ''}`}
                                 onClick={() => { setActiveSection('profile'); setEditMode(null); }}
                             >
-                                Profile
+                                <FaUser style={{ marginRight: '10px' }} /> Profile
                             </button>
                             <button
                                 className={`sidebar-btn ${activeSection === 'addresses' ? 'active' : ''}`}
                                 onClick={() => { setActiveSection('addresses'); setEditMode(null); }}
                             >
-                                Addresses
+                                <FaMapMarkerAlt style={{ marginRight: '10px' }} /> Addresses
                             </button>
 
                             <Link to="/logout" className="sidebar-btn logout">
-                                Logout
+                                <FaSignOutAlt style={{ marginRight: '10px' }} /> Logout
                             </Link>
                         </li>
                     </ul>

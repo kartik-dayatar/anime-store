@@ -1,16 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import {
-    heroSlides,
-    statsData,
-    animeList,
-    trendingProducts,
-    freshDrops,
-    whyUsData,
-    reviewsData,
-    newsData,
-    blogData
+import { 
+    FaFire, 
+    FaStar, 
+    FaBox, 
+    FaFilm, 
+    FaSmile, 
+    FaLock, 
+    FaCheckCircle, 
+    FaBolt, 
+    FaTruck, 
+    FaShieldAlt, 
+    FaTrophy,
+    FaChevronLeft,
+    FaChevronRight,
+    FaArrowUp,
+    FaLongArrowAltRight,
+    FaGem,
+    FaShippingFast
+} from 'react-icons/fa';
+import { 
+    heroSlides, 
+    statsData, 
+    animeList, 
+    trendingProducts, 
+    freshDrops, 
+    whyUsData, 
+    reviewsData, 
+    newsData, 
+    blogData 
 } from '../../data/homeData';
 import './Home.css';
 
@@ -108,8 +127,8 @@ function Home() {
                         </div>
                     ))}
                 </div>
-                <button className="carousel-arrow carousel-prev" onClick={prevSlide} aria-label="Previous">&#10094;</button>
-                <button className="carousel-arrow carousel-next" onClick={nextSlide} aria-label="Next">&#10095;</button>
+                <button className="carousel-arrow carousel-prev" onClick={prevSlide} aria-label="Previous"><FaChevronLeft /></button>
+                <button className="carousel-arrow carousel-next" onClick={nextSlide} aria-label="Next"><FaChevronRight /></button>
                 <div className="carousel-dots">
                     {heroSlides.map((_, i) => (
                         <button
@@ -125,12 +144,21 @@ function Home() {
             <section className="stats-strip">
                 <div className="container">
                     <div className="stats-row">
-                        {statsData.map((stat, i) => (
-                            <div key={i} className="stat-item fade-in">
-                                <span className="stat-icon">{stat.icon}</span>
-                                <div><strong>{stat.strong}</strong><p>{stat.text}</p></div>
-                            </div>
-                        ))}
+                        {statsData.map((stat, i) => {
+                            const Icon = {
+                                package: FaBox,
+                                film: FaFilm,
+                                happy: FaSmile,
+                                lock: FaLock,
+                                check: FaCheckCircle
+                            }[stat.icon] || FaBox;
+                            return (
+                                <div key={i} className="stat-item fade-in">
+                                    <span className="stat-icon"><Icon /></span>
+                                    <div><strong>{stat.strong}</strong><p>{stat.text}</p></div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -144,10 +172,12 @@ function Home() {
                             <h2>Shop by Anime</h2>
                             <p>Find merch from your favorite series</p>
                         </div>
-                        <button onClick={() => navigate('/products')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>View All &#8594;</button>
+                        <button onClick={() => navigate('/products')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            View All <FaLongArrowAltRight />
+                        </button>
                     </div>
                     <div className="anime-scroll-wrapper">
-                        <button className="scroll-arrow scroll-left" onClick={scrollLeft} aria-label="Scroll left">&#10094;</button>
+                        <button className="scroll-arrow scroll-left" onClick={scrollLeft} aria-label="Scroll left"><FaChevronLeft /></button>
                         <div className="anime-scroll-track" ref={scrollTrackRef}>
                             {animeList.map((anime, i) => (
                                 <div key={i} onClick={() => navigate(`/products?anime=${anime.link}`)} className="anime-card" style={{ cursor: 'pointer' }}>
@@ -158,7 +188,7 @@ function Home() {
                                 </div>
                             ))}
                         </div>
-                        <button className="scroll-arrow scroll-right" onClick={scrollRight} aria-label="Scroll right">&#10095;</button>
+                        <button className="scroll-arrow scroll-right" onClick={scrollRight} aria-label="Scroll right"><FaChevronRight /></button>
                     </div>
                 </div>
             </section>
@@ -168,10 +198,12 @@ function Home() {
                 <div className="container">
                     <div className="section-header fade-in">
                         <div>
-                            <h2>Trending Now 🔥</h2>
+                            <h2>Trending Now <FaFire style={{ color: '#ff4d4d' }} /></h2>
                             <p>Most popular picks this week</p>
                         </div>
-                        <button onClick={() => navigate('/products?type=trending')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>See All &#8594;</button>
+                        <button onClick={() => navigate('/products?type=trending')} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            See All <FaLongArrowAltRight />
+                        </button>
                     </div>
                     <div className="trending-grid">
                         {trendingProducts.map((item) => (
@@ -183,7 +215,7 @@ function Home() {
                                 <div className="trending-info">
                                     <h3>{item.name}</h3>
                                     <p className="trending-anime">{item.anime}</p>
-                                    <div className="trending-bottom"><span className="trending-price">{item.price}</span><span className="trending-rating">⭐ {item.rating}</span></div>
+                                    <div className="trending-bottom"><span className="trending-price">{item.price}</span><span className="trending-rating"><FaStar style={{ color: '#ffc107', marginRight: '4px' }} /> {item.rating}</span></div>
                                 </div>
                             </div>
                         ))}
@@ -196,10 +228,12 @@ function Home() {
                 <div className="container">
                     <div className="fresh-drops-header fade-in">
                         <div>
-                            <h2 className="fresh-drops-title">Fresh Drops 🔥</h2>
+                            <h2 className="fresh-drops-title">Fresh Drops <FaFire style={{ color: '#ff4d4d' }} /></h2>
                             <p className="fresh-drops-sub">Just landed. Limited stock.</p>
                         </div>
-                        <button onClick={() => navigate('/new-arrivals')} className="fresh-drops-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>View All &#8594;</button>
+                        <button onClick={() => navigate('/new-arrivals')} className="fresh-drops-link" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            View All <FaLongArrowAltRight />
+                        </button>
                     </div>
                     <div className="fresh-drops-grid">
                         {freshDrops.map((item, i) => (
@@ -227,13 +261,21 @@ function Home() {
                         </div>
                     </div>
                     <div className="why-grid">
-                        {whyUsData.map((item, i) => (
-                            <div key={i} className="why-card fade-in">
-                                <div className="why-icon">{item.icon}</div>
-                                <h3>{item.title}</h3>
-                                <p>{item.text}</p>
-                            </div>
-                        ))}
+                        {whyUsData.map((item, i) => {
+                            const Icon = {
+                                quality: FaGem,
+                                truck: FaShippingFast,
+                                shield: FaLock,
+                                crown: FaCheckCircle
+                            }[item.icon] || FaBolt;
+                            return (
+                                <div key={i} className="why-card fade-in">
+                                    <div className="why-icon"><Icon /></div>
+                                    <h3>{item.title}</h3>
+                                    <p>{item.text}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -250,7 +292,9 @@ function Home() {
                     <div className="reviews-grid">
                         {reviewsData.map((review, i) => (
                             <div key={i} className="review-card fade-in">
-                                <div className="review-stars">⭐⭐⭐⭐⭐</div>
+                                <div className="review-stars">
+                                    {[...Array(5)].map((_, i) => <FaStar key={i} style={{ color: '#ffc107' }} />)}
+                                </div>
                                 <p className="review-text">{review.text}</p>
                                 <div className="review-author">
                                     <div className="review-avatar" style={{ background: review.bg }}>{review.initial}</div>
@@ -279,7 +323,7 @@ function Home() {
                                 </div>
                                 <div className="news-body"><span className="news-tag">{news.tag}</span>
                                     <h3>{news.title}</h3>
-                                    <p>{news.text}</p><a href="#" className="news-link">Read More &#8594;</a>
+                                    <p>{news.text}</p><a href="#" className="news-link">Read More <FaLongArrowAltRight /></a>
                                 </div>
                             </article>
                         ))}
@@ -305,7 +349,7 @@ function Home() {
                                 </div>
                                 <div className="blog-body"><span className="blog-date">{post.date}</span>
                                     <h3>{post.title}</h3>
-                                    <p>{post.text}</p><a href="#" className="blog-link">Read Article &#8594;</a>
+                                    <p>{post.text}</p><a href="#" className="blog-link">Read Article <FaLongArrowAltRight /></a>
                                 </div>
                             </article>
                         ))}
@@ -328,7 +372,9 @@ function Home() {
             </section>
 
             {/* Back to Top */}
-            <button className="back-to-top" id="backToTop" aria-label="Back to top" onClick={scrollToTop}>&#8593;</button>
+            <button className="back-to-top" id="backToTop" aria-label="Back to top" onClick={scrollToTop}>
+                <FaArrowUp />
+            </button>
 
         </div>
     );

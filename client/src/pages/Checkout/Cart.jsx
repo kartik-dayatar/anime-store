@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaShoppingCart, FaTrash, FaLock, FaSyncAlt, FaArrowLeft, FaShoppingBag } from 'react-icons/fa';
+import { GiFox, GiTShirt, GiBroadsword, GiPirateFlag } from 'react-icons/gi';
 import './Cart.css';
 
 const INITIAL_CART = [
-    { id: 1, name: "Naruto Sage Mode Figure", price: 2499, qty: 1, icon: "🦊", desc: "Collectible • 18cm PVC" },
-    { id: 2, name: "Attack on Titan Hoodie", price: 1999, qty: 2, icon: "🧥", desc: "Survey Corps • Size L" },
-    { id: 3, name: "Demon Slayer Katana Replica", price: 4999, qty: 1, icon: "⚔️", desc: "Nichirin Blade • Steel" },
-    { id: 4, name: "One Piece Wanted Poster Set", price: 799, qty: 3, icon: "🏴☠️", desc: "Pack of 9 • A4 Matte" }
+    { id: 1, name: "Naruto Sage Mode Figure", price: 2499, qty: 1, icon: "fox", desc: "Collectible • 18cm PVC" },
+    { id: 2, name: "Attack on Titan Hoodie", price: 1999, qty: 2, icon: "tshirt", desc: "Survey Corps • Size L" },
+    { id: 3, name: "Demon Slayer Katana Replica", price: 4999, qty: 1, icon: "sword", desc: "Nichirin Blade • Steel" },
+    { id: 4, name: "One Piece Wanted Poster Set", price: 799, qty: 3, icon: "pirate", desc: "Pack of 9 • A4 Matte" }
 ];
+
+const iconMap = {
+    fox: <GiFox size={24} />,
+    tshirt: <GiTShirt size={24} />,
+    sword: <GiBroadsword size={24} />,
+    pirate: <GiPirateFlag size={24} />
+};
 
 const SHIPPING_THRESHOLD = 5000;
 const SHIPPING_COST = 149;
@@ -46,8 +55,6 @@ export default function Cart() {
     };
 
     const removeItem = (id) => {
-        // Add removing class logic if desired, but for React simple state removal is cleaner
-        // To mimic the animation, we could use a separate state or library, but basic removal first.
         setCartItems(prev => prev.filter(item => item.id !== id));
     };
 
@@ -58,7 +65,7 @@ export default function Cart() {
             <main className="cart-main">
                 <section className="cart-shell" id="cartSection">
                     <div className="cart-empty-message">
-                        <div className="empty-icon">🛒</div>
+                        <div className="empty-icon"><FaShoppingCart size={48} /></div>
                         <h2>Your cart is empty</h2>
                         <p>Looks like you haven't added any anime gear yet.</p>
                         <Link to="/products" className="btn primary">Browse Products</Link>
@@ -82,7 +89,7 @@ export default function Cart() {
                             <article key={item.id} className="cart-row">
                                 <div className="cart-product">
                                     <div className="cart-image-slot">
-                                        <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                                        <span style={{ display: 'flex' }}>{iconMap[item.icon]}</span>
                                     </div>
                                     <div className="cart-product-info">
                                         <h2>{item.name}</h2>
@@ -95,7 +102,9 @@ export default function Cart() {
                                     <span className="qty-value">{item.qty}</span>
                                     <button className="cart-qty-btn" onClick={() => changeQty(item.id, 1)}>+</button>
                                 </div>
-                                <button className="cart-remove" onClick={() => removeItem(item.id)}>🗑</button>
+                                <button className="cart-remove" onClick={() => removeItem(item.id)} aria-label="Remove item">
+                                    <FaTrash />
+                                </button>
                             </article>
                         ))}
                     </div>
@@ -131,14 +140,14 @@ export default function Cart() {
                         <span>Total</span>
                         <span>{formatCurrency(totals.total)}</span>
                     </div>
-                    <button onClick={() => navigate('/checkout')} className="btn primary cart-checkout-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', width: '100%', marginTop: '20px' }}>
-                        Proceed to Checkout
+                    <button onClick={() => navigate('/checkout')} className="btn primary cart-checkout-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', marginTop: '20px' }}>
+                        Proceed to Checkout <FaLock size={14} />
                     </button>
-                    <Link to="/home" style={{ display: 'block', textAlign: 'center', marginTop: '12px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                        ← Continue Shopping
+                    <Link to="/home" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '12px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                        <FaArrowLeft size={12} /> Continue Shopping
                     </Link>
-                    <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
-                        🔒 Secure Checkout &bull; 30-Day Returns
+                    <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', background: '#f8fafc', padding: '12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                        <FaLock size={12} /> Secure Checkout &bull; 30-Day Returns
                     </div>
                 </aside>
             </section>

@@ -3,7 +3,6 @@ import { lazy, Suspense } from 'react';
 
 import Layout from './components/Layout/Layout';
 import PostLoginLayout from './components/Layout/PostLoginLayout';
-import AnimatedLoader from './components/ui/AnimatedLoader';
 import { ToastProvider } from './components/ui/Toast';
 
 // ── General Pages ──────────────────────────────────────────────────────────
@@ -53,7 +52,7 @@ function App() {
     return (
         <BrowserRouter>
             <ToastProvider>
-                <Suspense fallback={<AnimatedLoader text="Initializing..." />}>
+                <Suspense fallback={null}>
                     <Routes>
                             {/* ── Landing Removed ──────────────────────── */}
 

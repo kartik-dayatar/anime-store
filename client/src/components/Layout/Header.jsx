@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaBolt, FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import useCartStore from '../../store/cartStore';
 import './Header.css';
 
@@ -32,9 +33,13 @@ function Header({ variant = 'pre-login' }) {
                 {/* LEFT: Logo */}
                 <div className="logo-container">
                     <Link to="/home" className="logo-link">
-                        <span style={{ fontSize: '1.5rem', marginRight: '5px' }}>⚡</span>
+                        <div className="logo-badge">
+                            <FaBolt className="logo-bolt" />
+                        </div>
+                        <span className="brand-name">
+                            ANIME <span className="brand-accent">STORE</span>
+                        </span>
                     </Link>
-                    <span className="brand-tagline">Premium Anime Merchandise</span>
                 </div>
 
                 {/* CENTER: Search Bar */}
@@ -48,7 +53,9 @@ function Header({ variant = 'pre-login' }) {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button type="submit">🔍</button>
+                        <button type="submit" aria-label="Search">
+                            <FaSearch />
+                        </button>
                     </form>
                 </div>
 
@@ -66,10 +73,8 @@ function Header({ variant = 'pre-login' }) {
                         {isPostLogin ? (
                             /* ── POST-LOGIN NAVBAR: show username ── */
                             <Link to="/account" className="user-pill">
-                                <span className="user-avatar">
-                                    O
-                                </span>
-                                <span className="user-name" style={{ marginLeft: "4px" }}>Otaku</span>
+                                <FaUserCircle size={20} />
+                                <span className="user-name" style={{ marginLeft: "8px" }}>Otaku</span>
                             </Link>
                         ) : (
                             /* ── PRE-LOGIN NAVBAR: show Sign In / Sign Up ── */
@@ -81,11 +86,11 @@ function Header({ variant = 'pre-login' }) {
                     </div>
 
                     <Link to="/wishlist" className="btn ghost icon-btn" aria-label="Wishlist">
-                        ❤️
+                        <FaHeart />
                     </Link>
 
                     <Link to="/cart" className="btn ghost icon-btn" aria-label="Cart">
-                        🛒
+                        <FaShoppingCart />
                         {cartCount > 0 && (
                             <span className="badge">{cartCount}</span>
                         )}
