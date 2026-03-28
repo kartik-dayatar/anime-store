@@ -1,4 +1,4 @@
-import React from 'react';
+import narutoFloat from '../../assets/images/hero/naruto_float.png';
 import './Contact.css';
 
 export default function Contact() {
@@ -34,9 +34,7 @@ export default function Contact() {
 
                     <div className="contact-info-side">
                         <div className="login-hero-images contact-hero-strip">
-                            <div className="login-hero-image-slot" style={{ background: 'linear-gradient(135deg, #fecaca, #f87171)' }}></div>
-                            <div className="login-hero-image-slot" style={{ background: 'linear-gradient(135deg, #bfdbfe, #60a5fa)' }}></div>
-                            <div className="login-hero-image-slot" style={{ background: 'linear-gradient(135deg, #bbf7d0, #4ade80)' }}></div>
+                            <div className="login-hero-image-slot" style={{ backgroundImage: `url(${narutoFloat})`, backgroundColor: '#f0f4ff' }}></div>
                         </div>
 
                         <div className="contact-details-card">
